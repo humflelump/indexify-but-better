@@ -1,0 +1,1 @@
+{"version":3,"file":"readFile.js","sourceRoot":"","sources":["../../src/file-traverse/readFile.ts"],"names":[],"mappings":";;;AAAA,MAAM,EAAE,GAAG,OAAO,CAAC,IAAI,CAAC,CAAC;AAEzB,SAAgB,gBAAgB,CAAC,IAAY;IAC3C,OAAO,EAAE,CAAC,YAAY,CAAC,IAAI,EAAE,EAAE,QAAQ,EAAE,MAAM,EAAE,IAAI,EAAE,GAAG,EAAE,CAAC,CAAC;AAChE,CAAC;AAFD,4CAEC"}

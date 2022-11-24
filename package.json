@@ -1,0 +1,84 @@
+{
+  "name": "helloworld",
+  "displayName": "HelloWorld",
+  "description": "test",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.73.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "helloworld.virtual_index",
+        "title": "View Exports"
+      },
+      {
+        "command": "helloworld.folder_imports",
+        "title": "View Imports"
+      },
+      {
+        "command": "helloworld.unused_exports",
+        "title": "View Unused Exports"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "when": "",
+          "command": "helloworld.virtual_index",
+          "group": "YourGroup@1"
+        },
+        {
+          "when": "",
+          "command": "helloworld.unused_exports",
+          "group": "YourGroup@1"
+        },
+        {
+          "when": "",
+          "command": "helloworld.folder_imports",
+          "group": "YourGroup@1"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "yarn run compile && yarn run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.73.0",
+    "@typescript-eslint/eslint-plugin": "^5.42.0",
+    "@typescript-eslint/parser": "^5.42.0",
+    "@vscode/test-electron": "^2.2.0",
+    "eslint": "^8.26.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.1.0",
+    "prettier": "^2.6.2",
+    "typescript": "^4.9.3"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.189",
+    "@typescript-eslint/typescript-estree": "^5.44.0",
+    "abstract-syntax-tree": "^2.20.6",
+    "es-module-lexer": "^1.1.0",
+    "fs": "^0.0.1-security",
+    "loadash": "^1.0.0",
+    "lodash": "^4.17.21",
+    "parse-imports": "^1.1.0",
+    "ts-unused-exports": "^8.0.0"
+  }
+}
