@@ -21,7 +21,7 @@ type ProxiedFile = {
   exportedFromIndex: string;
 };
 
-export function getProxiedFilesInfo(
+export function deleteIndexFileInfo(
   indexFile: string,
   proxiedFiles: ProxiedFile[],
   imports: ImportNode[]

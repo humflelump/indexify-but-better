@@ -9,8 +9,8 @@ import { createGraph } from "../graph/createGraph";
 import {
   indexFileImports,
   transformExports,
-  getProxiedFilesInfo,
-} from "../graph/getProxiedFilesInfo";
+  deleteIndexFileInfo,
+} from "../graph/deleteIndexFileInfo";
 import { performImportEditsOnFile } from "../parser/performImportEditsOnFile";
 import { ExportNode, ImportNode } from "../types";
 
@@ -60,7 +60,7 @@ export function deleteIndexFile(
       proxied,
       exports
     );
-    const importsToFix = getProxiedFilesInfo(
+    const importsToFix = deleteIndexFileInfo(
       indexFileNoExtension,
       proxied,
       imports
