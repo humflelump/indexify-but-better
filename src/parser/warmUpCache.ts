@@ -1,6 +1,6 @@
 import { PARSER_OPTIONS } from "../constants";
-import { getAllFilesInFolder } from "../file-traverse/getAllFilesInFolder";
-import { readFileContents } from "../file-traverse/readFileContents";
+import { getAllFilesInFolder } from "../file-helpers/getAllFilesInFolder";
+import { readFileContents } from "../file-helpers/readFileContents";
 import { getWorkspace } from "../utils";
 import { memoizedParse } from "./memoizedParse";
 

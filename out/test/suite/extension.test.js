@@ -4,10 +4,10 @@ const assert = require("assert");
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 const vscode = require("vscode");
-const getAbsolutePath_1 = require("../../file-traverse/getAbsolutePath");
-const getRelativePath_1 = require("../../file-traverse/getRelativePath");
-const removeFileExtension_1 = require("../../file-traverse/removeFileExtension");
-const transformImportPaths_1 = require("../../file-traverse/transformImportPaths");
+const getAbsolutePath_1 = require("../../file-helpers/getAbsolutePath");
+const getRelativePath_1 = require("../../file-helpers/getRelativePath");
+const removeFileExtension_1 = require("../../file-helpers/removeFileExtension");
+const transformImportPaths_1 = require("../../file-helpers/transformImportPaths");
 const organizeImports_1 = require("../../parser/organizeImports");
 const parseExports_1 = require("../../parser/parseExports");
 const parseImports_1 = require("../../parser/parseImports");
@@ -514,6 +514,7 @@ import './e';`;
         };
         const goal = {
             file: "/root/shared/component",
+            fileWithExtension: "/root/shared/component.ts",
             source: "/misc/index",
             type: "Import",
             name: "default",
@@ -535,6 +536,7 @@ import './e';`;
         const goal = {
             range: [0, 0],
             file: "/root/shared/component",
+            fileWithExtension: "/root/shared/component.ts",
             type: "ExportAllProxy",
             source: "/misc/index",
             exportName: null,

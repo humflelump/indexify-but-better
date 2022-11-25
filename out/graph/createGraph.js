@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createGraph = void 0;
-const getAllFilesInFolder_1 = require("../file-traverse/getAllFilesInFolder");
-const readFileContents_1 = require("../file-traverse/readFileContents");
-const transformImportPaths_1 = require("../file-traverse/transformImportPaths");
+const getAllFilesInFolder_1 = require("../file-helpers/getAllFilesInFolder");
+const readFileContents_1 = require("../file-helpers/readFileContents");
+const transformImportPaths_1 = require("../file-helpers/transformImportPaths");
 const parseExports_1 = require("../parser/parseExports");
 const parseImports_1 = require("../parser/parseImports");
 const Graph_1 = require("./Graph");

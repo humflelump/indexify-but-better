@@ -1,12 +1,12 @@
 import {
   getAllFilesInFolder,
   getAllFoldersInFolder,
-} from "../file-traverse/getAllFilesInFolder";
-import { readFileContents } from "../file-traverse/readFileContents";
+} from "../file-helpers/getAllFilesInFolder";
+import { readFileContents } from "../file-helpers/readFileContents";
 import {
   transformExportPaths,
   transformImportPaths,
-} from "../file-traverse/transformImportPaths";
+} from "../file-helpers/transformImportPaths";
 import { parseExports } from "../parser/parseExports";
 import { parseImports } from "../parser/parseImports";
 import { ExportNode, ImportNode } from "../types";

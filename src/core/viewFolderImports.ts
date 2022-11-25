@@ -1,5 +1,5 @@
 import { sortBy } from "lodash";
-import { getRelativePath } from "../file-traverse/getRelativePath";
+import { getRelativePath } from "../file-helpers/getRelativePath";
 import { createGraph } from "../graph/createGraph";
 import { referenceCountIntoFolder } from "../graph/referenceCountIntoFolder";
 

@@ -1,6 +1,6 @@
 import { groupBy, orderBy } from "lodash";
-import { getAbsolutePath } from "../file-traverse/getAbsolutePath";
-import { getAllFilesInFolder } from "../file-traverse/getAllFilesInFolder";
+import { getAbsolutePath } from "../file-helpers/getAbsolutePath";
+import { getAllFilesInFolder } from "../file-helpers/getAllFilesInFolder";
 import { AnyNode, ExportNode, NewExport, NodeWithSource } from "../types";
 
 export class ExportGraph {

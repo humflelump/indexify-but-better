@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.indexFileImports = exports.transformExports = exports.transformImports = void 0;
 const lodash_1 = require("lodash");
-const readFileContents_1 = require("../file-traverse/readFileContents");
-const removeFileExtension_1 = require("../file-traverse/removeFileExtension");
+const readFileContents_1 = require("../file-helpers/readFileContents");
+const removeFileExtension_1 = require("../file-helpers/removeFileExtension");
 const parseExports_1 = require("../parser/parseExports");
 const parseImports_1 = require("../parser/parseImports");
 function transformImports(indexFile, proxiedFiles, imports) {
@@ -17,20 +17,9 @@ function transformImports(indexFile, proxiedFiles, imports) {
             if (node.moduleName) {
                 throw Error(`Cannot 'import * as X' in: ${node.file}`);
             }
-            const newImports = proxiedFiles.map((proxy) => {
-                return {
-                    file: node.file,
-                    source: proxy.proxiedFile,
-                    range: [0, 0],
-                    type: "Import",
-                    moduleName: proxy.exportedFromIndex,
-                    name: proxy.exportedFromFile,
-                };
-            });
-            result.push({
-                original: node,
-                next: newImports,
-            });
+            else {
+                throw Error(`Cannot do a generic import in: ${node.file}`);
+            }
         }
         else if (node.type === "Import") {
             const proxy = indexedImports[node.name];

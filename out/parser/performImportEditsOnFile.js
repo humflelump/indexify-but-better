@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.performImportEditsOnFile = void 0;
 const lodash_1 = require("lodash");
-const getRelativePath_1 = require("../file-traverse/getRelativePath");
+const getRelativePath_1 = require("../file-helpers/getRelativePath");
 const utils_1 = require("../utils");
 const organizeImports_1 = require("./organizeImports");
 function exportProxyToString(exp) {

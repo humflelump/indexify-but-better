@@ -4,13 +4,13 @@ import { text } from "stream/consumers";
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import * as vscode from "vscode";
-import { getAbsolutePath } from "../../file-traverse/getAbsolutePath";
-import { getRelativePath } from "../../file-traverse/getRelativePath";
-import { removeFileExtension } from "../../file-traverse/removeFileExtension";
+import { getAbsolutePath } from "../../file-helpers/getAbsolutePath";
+import { getRelativePath } from "../../file-helpers/getRelativePath";
+import { removeFileExtension } from "../../file-helpers/removeFileExtension";
 import {
   transformExportPaths,
   transformImportPaths,
-} from "../../file-traverse/transformImportPaths";
+} from "../../file-helpers/transformImportPaths";
 import { organizeImports } from "../../parser/organizeImports";
 import { parseExports } from "../../parser/parseExports";
 import { parseImports } from "../../parser/parseImports";
@@ -552,6 +552,7 @@ import './e';`;
     };
     const goal: ImportNode = {
       file: "/root/shared/component",
+      fileWithExtension: "/root/shared/component.ts",
       source: "/misc/index",
       type: "Import",
       name: "default",
@@ -574,6 +575,7 @@ import './e';`;
     const goal = {
       range: [0, 0],
       file: "/root/shared/component",
+      fileWithExtension: "/root/shared/component.ts",
       type: "ExportAllProxy",
       source: "/misc/index",
       exportName: null,

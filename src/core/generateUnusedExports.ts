@@ -1,4 +1,4 @@
-import { getRelativePath } from "../file-traverse/getRelativePath";
+import { getRelativePath } from "../file-helpers/getRelativePath";
 import { createGraph } from "../graph/createGraph";
 import { unusedExports } from "../graph/unusedExports";
 

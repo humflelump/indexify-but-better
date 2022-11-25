@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateUnusedExports = void 0;
-const getRelativePath_1 = require("../file-traverse/getRelativePath");
+const getRelativePath_1 = require("../file-helpers/getRelativePath");
 const createGraph_1 = require("../graph/createGraph");
 const unusedExports_1 = require("../graph/unusedExports");
 function generateUnusedExports(workspaceDirectory, selectedDirectory) {

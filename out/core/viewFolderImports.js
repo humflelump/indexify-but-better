@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.viewFolderImports = void 0;
 const lodash_1 = require("lodash");
-const getRelativePath_1 = require("../file-traverse/getRelativePath");
+const getRelativePath_1 = require("../file-helpers/getRelativePath");
 const createGraph_1 = require("../graph/createGraph");
 const referenceCountIntoFolder_1 = require("../graph/referenceCountIntoFolder");
 function viewFolderImports(workspaceDirectory, selectedDirectory) {

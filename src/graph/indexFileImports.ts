@@ -1,11 +1,10 @@
 import { keyBy } from "lodash";
-import { readFileContents } from "../file-traverse/readFileContents";
-import { removeFileExtension } from "../file-traverse/removeFileExtension";
+import { readFileContents } from "../file-helpers/readFileContents";
+import { removeFileExtension } from "../file-helpers/removeFileExtension";
 import { parseExports } from "../parser/parseExports";
 import { parseImports } from "../parser/parseImports";
 import {
   AnyNode,
-  BasicImport,
   ExportNode,
   ExportProxy,
   ExportTransform,
@@ -36,21 +35,9 @@ export function transformImports(
     if (node.type === "ImportAll") {
       if (node.moduleName) {
         throw Error(`Cannot 'import * as X' in: ${node.file}`);
+      } else {
+        throw Error(`Cannot do a generic import in: ${node.file}`);
       }
-      const newImports: BasicImport[] = proxiedFiles.map((proxy) => {
-        return {
-          file: node.file,
-          source: proxy.proxiedFile,
-          range: [0, 0],
-          type: "Import",
-          moduleName: proxy.exportedFromIndex,
-          name: proxy.exportedFromFile,
-        };
-      });
-      result.push({
-        original: node,
-        next: newImports,
-      });
     } else if (node.type === "Import") {
       const proxy = indexedImports[node.name];
       if (!proxy) {

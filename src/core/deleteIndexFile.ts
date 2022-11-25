@@ -1,10 +1,10 @@
 import { groupBy, keys } from "lodash";
-import { deleteFile } from "../file-traverse/deleteFile";
-import { getIndexFilesInFolder } from "../file-traverse/getIndexFilesInFolder";
-import { isFile } from "../file-traverse/isFile";
-import { readFileContents } from "../file-traverse/readFileContents";
-import { removeFileExtension } from "../file-traverse/removeFileExtension";
-import { writeToFile } from "../file-traverse/writeToFile";
+import { deleteFile } from "../file-helpers/deleteFile";
+import { getIndexFilesInFolder } from "../file-helpers/getIndexFilesInFolder";
+import { isFile } from "../file-helpers/isFile";
+import { readFileContents } from "../file-helpers/readFileContents";
+import { removeFileExtension } from "../file-helpers/removeFileExtension";
+import { writeToFile } from "../file-helpers/writeToFile";
 import { createGraph } from "../graph/createGraph";
 import {
   indexFileImports,

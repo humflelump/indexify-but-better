@@ -4,7 +4,7 @@ exports.generateVirtualIndex = void 0;
 const lodash_1 = require("lodash");
 const createGraph_1 = require("../graph/createGraph");
 const referenceCountOutOfFolder_1 = require("../graph/referenceCountOutOfFolder");
-const getRelativePath_1 = require("../file-traverse/getRelativePath");
+const getRelativePath_1 = require("../file-helpers/getRelativePath");
 function generateVirtualIndex(workspaceDirectory, selectedDirectory) {
     const graph = (0, createGraph_1.createGraph)(workspaceDirectory, workspaceDirectory);
     let nodes = (0, referenceCountOutOfFolder_1.referenceCountOutOfFolder)(graph, selectedDirectory);

@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.warmUpCache = void 0;
 const constants_1 = require("../constants");
-const getAllFilesInFolder_1 = require("../file-traverse/getAllFilesInFolder");
-const readFileContents_1 = require("../file-traverse/readFileContents");
+const getAllFilesInFolder_1 = require("../file-helpers/getAllFilesInFolder");
+const readFileContents_1 = require("../file-helpers/readFileContents");
 const utils_1 = require("../utils");
 const memoizedParse_1 = require("./memoizedParse");
 function warmUpCache(retries = 0) {

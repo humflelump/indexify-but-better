@@ -1,5 +1,5 @@
 import { flatten } from "lodash";
-import { getRelativePath } from "../file-traverse/getRelativePath";
+import { getRelativePath } from "../file-helpers/getRelativePath";
 import {
   BasicImport,
   ExportProxy,
