@@ -33,14 +33,14 @@ function deleteIndexFile(workspaceDirectory, selectedDirectory) {
     const groupedExportsByFile = (0, lodash_1.groupBy)(exportNodes, (d) => d.fileWithExtension);
     const indexFile = indexFiles[0];
     const indexFileNoExtension = (0, removeFileExtension_1.removeFileExtension)(indexFile);
-    const proxied = (0, deleteIndexFileInfo_1.indexFileImports)(graph, indexFile);
+    const proxied = (0, deleteIndexFileInfo_1.deleteIndexFileInfo)(graph, indexFile);
     const allFiles = Array.from(new Set([...(0, lodash_1.keys)(groupedExportsByFile), ...(0, lodash_1.keys)(groupedImportsByFile)]));
     const edits = [];
     for (const file of allFiles) {
         const imports = groupedImportsByFile[file] || [];
         const exports = groupedExportsByFile[file] || [];
         const exportsToFix = (0, deleteIndexFileInfo_1.transformExports)(indexFileNoExtension, proxied, exports);
-        const importsToFix = (0, deleteIndexFileInfo_1.deleteIndexFileInfo)(indexFileNoExtension, proxied, imports);
+        const importsToFix = (0, deleteIndexFileInfo_1.getProxiedFilesInfo)(indexFileNoExtension, proxied, imports);
         if (importsToFix.length || exportsToFix.length) {
             const oldCode = (0, readFileContents_1.readFileContents)(file);
             const newCode = (0, performImportEditsOnFile_1.performImportEditsOnFile)(oldCode, importsToFix, exportsToFix);

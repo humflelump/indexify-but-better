@@ -7,9 +7,9 @@ import { removeFileExtension } from "../file-helpers/removeFileExtension";
 import { writeToFile } from "../file-helpers/writeToFile";
 import { createGraph } from "../graph/createGraph";
 import {
-  indexFileImports,
-  transformExports,
   deleteIndexFileInfo,
+  transformExports,
+  getProxiedFilesInfo,
 } from "../graph/deleteIndexFileInfo";
 import { performImportEditsOnFile } from "../parser/performImportEditsOnFile";
 import { ExportNode, ImportNode } from "../types";
@@ -42,7 +42,7 @@ export function deleteIndexFile(
   const groupedExportsByFile = groupBy(exportNodes, (d) => d.fileWithExtension);
   const indexFile = indexFiles[0];
   const indexFileNoExtension = removeFileExtension(indexFile);
-  const proxied = indexFileImports(graph, indexFile);
+  const proxied = deleteIndexFileInfo(graph, indexFile);
   const allFiles = Array.from(
     new Set([...keys(groupedExportsByFile), ...keys(groupedImportsByFile)])
   );
@@ -60,7 +60,7 @@ export function deleteIndexFile(
       proxied,
       exports
     );
-    const importsToFix = deleteIndexFileInfo(
+    const importsToFix = getProxiedFilesInfo(
       indexFileNoExtension,
       proxied,
       imports

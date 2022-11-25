@@ -21,7 +21,7 @@ type ProxiedFile = {
   exportedFromIndex: string;
 };
 
-export function deleteIndexFileInfo(
+export function getProxiedFilesInfo(
   indexFile: string,
   proxiedFiles: ProxiedFile[],
   imports: ImportNode[]
@@ -118,7 +118,7 @@ export function transformExports(
   return result;
 }
 
-export function indexFileImports(graph: ExportGraph, indexFile: string) {
+export function deleteIndexFileInfo(graph: ExportGraph, indexFile: string) {
   const code = readFileContents(indexFile);
   const imports = parseImports(code, indexFile);
   if (imports.length > 0) {
