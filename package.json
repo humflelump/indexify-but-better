@@ -26,23 +26,32 @@
       {
         "command": "helloworld.unused_exports",
         "title": "View Unused Exports"
+      },
+      {
+        "command": "helloworld.delete_index",
+        "title": "Delete Index File"
       }
     ],
     "menus": {
       "explorer/context": [
         {
-          "when": "",
+          "when": "resourceExtname != .ts && resourceExtname != .tsx && resourceExtname != .js && resourceExtname != .jsx",
           "command": "helloworld.virtual_index",
           "group": "YourGroup@1"
         },
         {
-          "when": "",
+          "when": "resourceExtname != .ts && resourceExtname != .tsx && resourceExtname != .js && resourceExtname != .jsx",
           "command": "helloworld.unused_exports",
           "group": "YourGroup@1"
         },
         {
-          "when": "",
+          "when": "resourceExtname != .ts && resourceExtname != .tsx && resourceExtname != .js && resourceExtname != .jsx",
           "command": "helloworld.folder_imports",
+          "group": "YourGroup@1"
+        },
+        {
+          "when": "resourceExtname != .ts && resourceExtname != .tsx && resourceExtname != .js && resourceExtname != .jsx",
+          "command": "helloworld.delete_index",
           "group": "YourGroup@1"
         }
       ]
@@ -79,6 +88,7 @@
     "loadash": "^1.0.0",
     "lodash": "^4.17.21",
     "parse-imports": "^1.1.0",
+    "ts-morph": "^17.0.1",
     "ts-unused-exports": "^8.0.0"
   }
 }

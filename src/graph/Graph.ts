@@ -15,7 +15,10 @@ export class ExportGraph {
     this.groupByImport = groupBy(importNodes, (d) => d.source);
   }
 
-  public traverse(node: NewExport, callback: (node: AnyNode) => void) {
+  public traverse(
+    node: NewExport,
+    callback: (node: AnyNode, variable: string) => void
+  ) {
     const traverse = (
       node: AnyNode,
       variable: string,
@@ -29,26 +32,26 @@ export class ExportGraph {
       for (const child of possibleChildren) {
         if (child.type === "ExportProxy") {
           if (child.importName === variable) {
-            callback(child);
+            callback(child, child.exportName);
             traverse(child, child.exportName, visits);
           }
         } else if (child.type === "ExportAllProxy") {
-          callback(child);
-          traverse(
-            child,
-            child.exportName ? child.exportName : variable,
-            visits
-          );
+          if (variable === "default") {
+            return;
+          }
+          const newVariable = child.exportName ? child.exportName : variable;
+          callback(child, newVariable);
+          traverse(child, newVariable, visits);
         } else if (child.type === "Import") {
           if (child.name === variable) {
-            callback(child);
+            callback(child, variable);
           }
         } else if (child.type === "ImportAll") {
-          callback(child);
+          callback(child, variable);
         }
       }
     };
-    callback(node);
+    callback(node, node.name);
     traverse(node, node.name, new Set());
   }
 

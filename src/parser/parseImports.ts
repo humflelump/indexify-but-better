@@ -23,6 +23,8 @@ export function parseImports(
         file: filename,
         source: String(obj?.source?.value),
         type: "ImportAll",
+        range: obj.range,
+        moduleName: null,
       });
     });
   })();
@@ -44,6 +46,8 @@ export function parseImports(
           file: filename,
           source,
           type: "ImportAll",
+          moduleName: null,
+          range: importStatement.range,
         });
       }
 
@@ -54,12 +58,16 @@ export function parseImports(
             source,
             type: "Import",
             name: "default",
+            moduleName: specifier.local.name,
+            range: importStatement.range,
           });
         } else if (specifier.type === "ImportNamespaceSpecifier") {
           result.push({
             file: filename,
             source,
             type: "ImportAll",
+            moduleName: specifier.local.name,
+            range: importStatement.range,
           });
         } else if (specifier.type === "ImportSpecifier") {
           result.push({
@@ -67,6 +75,8 @@ export function parseImports(
             source,
             type: "Import",
             name: specifier.imported.name,
+            moduleName: specifier.local.name,
+            range: importStatement.range,
           });
         }
       });

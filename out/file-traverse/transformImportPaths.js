@@ -2,32 +2,23 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.transformExportPaths = exports.transformImportPaths = void 0;
 const getAbsolutePath_1 = require("./getAbsolutePath");
-function removeFileExtension(file) {
-    for (let i = file.length - 1; i >= 1; i--) {
-        const c = file[i];
-        if (c === "/") {
-            return file;
-        }
-        if (c === ".") {
-            return file.slice(0, i);
-        }
-    }
-    return file;
-}
+const removeFileExtension_1 = require("./removeFileExtension");
 function transformImportPaths(im, folders) {
     im = { ...im };
-    im.file = removeFileExtension(im.file);
+    im.fileWithExtension = im.file;
+    im.file = (0, removeFileExtension_1.removeFileExtension)(im.file);
     let importPath = (0, getAbsolutePath_1.getAbsolutePath)(im.file, im.source);
     if (folders.has(importPath)) {
         importPath += "/index";
     }
-    im.source = removeFileExtension(importPath);
+    im.source = (0, removeFileExtension_1.removeFileExtension)(importPath);
     return im;
 }
 exports.transformImportPaths = transformImportPaths;
 function transformExportPaths(ex, folders) {
     ex = { ...ex };
-    ex.file = removeFileExtension(ex.file);
+    ex.fileWithExtension = ex.file;
+    ex.file = (0, removeFileExtension_1.removeFileExtension)(ex.file);
     if (ex.type === "NewExport") {
         return ex;
     }
@@ -35,7 +26,7 @@ function transformExportPaths(ex, folders) {
     if (folders.has(importPath)) {
         importPath += "/index";
     }
-    ex.source = removeFileExtension(importPath);
+    ex.source = (0, removeFileExtension_1.removeFileExtension)(importPath);
     return ex;
 }
 exports.transformExportPaths = transformExportPaths;

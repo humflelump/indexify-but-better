@@ -6,9 +6,13 @@ const assert = require("assert");
 const vscode = require("vscode");
 const getAbsolutePath_1 = require("../../file-traverse/getAbsolutePath");
 const getRelativePath_1 = require("../../file-traverse/getRelativePath");
+const removeFileExtension_1 = require("../../file-traverse/removeFileExtension");
 const transformImportPaths_1 = require("../../file-traverse/transformImportPaths");
+const organizeImports_1 = require("../../parser/organizeImports");
 const parseExports_1 = require("../../parser/parseExports");
 const parseImports_1 = require("../../parser/parseImports");
+const performImportEditsOnFile_1 = require("../../parser/performImportEditsOnFile");
+const utils_1 = require("../../utils");
 // import * as myExtension from '../../extension';
 suite("Extension Test Suite", () => {
     vscode.window.showInformationMessage("Start all tests.");
@@ -302,12 +306,16 @@ suite("Extension Test Suite", () => {
                 source: "./a",
                 type: "Import",
                 name: "a",
+                moduleName: "a",
+                range: [0, code.length],
             },
         ];
         assert.deepEqual(nodes, goal);
     });
     test("Default Import", () => {
-        const code = `import a from './a'; import b from './b';`;
+        const s1 = `import a from './a';`;
+        const s2 = `import b from './b';`;
+        const code = s1 + s2;
         const nodes = (0, parseImports_1.parseImports)(code, "file");
         const goal = [
             {
@@ -315,12 +323,16 @@ suite("Extension Test Suite", () => {
                 source: "./a",
                 type: "Import",
                 name: "default",
+                moduleName: "a",
+                range: [0, s1.length],
             },
             {
                 file: "file",
                 source: "./b",
                 type: "Import",
                 name: "default",
+                moduleName: "b",
+                range: [s1.length, s1.length + s2.length],
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -333,18 +345,22 @@ suite("Extension Test Suite", () => {
                 file: "file",
                 source: "./all",
                 type: "ImportAll",
+                moduleName: null,
+                range: [0, code.length],
             },
         ];
         assert.deepEqual(nodes, goal);
     });
     test("Import All With import()", () => {
-        const code = `import('./all');`;
+        const code = `import('./all')`;
         const nodes = (0, parseImports_1.parseImports)(code, "file");
         const goal = [
             {
                 file: "file",
                 source: "./all",
                 type: "ImportAll",
+                moduleName: null,
+                range: [0, code.length],
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -357,6 +373,8 @@ suite("Extension Test Suite", () => {
                 file: "file",
                 source: "./lodash",
                 type: "ImportAll",
+                moduleName: "_",
+                range: [0, code.length],
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -370,18 +388,24 @@ suite("Extension Test Suite", () => {
                 source: "./a",
                 type: "Import",
                 name: "default",
+                range: [0, code.length],
+                moduleName: "X",
             },
             {
                 file: "file",
                 source: "./a",
                 type: "Import",
                 name: "a",
+                range: [0, code.length],
+                moduleName: "b",
             },
             {
                 file: "file",
                 source: "./a",
                 type: "Import",
                 name: "c",
+                range: [0, code.length],
+                moduleName: "d",
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -395,11 +419,15 @@ suite("Extension Test Suite", () => {
                 source: "./a",
                 type: "Import",
                 name: "default",
+                range: [0, code.length],
+                moduleName: "X",
             },
             {
                 file: "file",
                 source: "./a",
                 type: "ImportAll",
+                range: [0, code.length],
+                moduleName: "t",
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -415,26 +443,34 @@ import './e';`;
         const goal = [
             {
                 file: "file",
+                moduleName: "A",
+                name: "default",
+                range: [0, 20],
                 source: "./a",
                 type: "Import",
-                name: "default",
             },
             {
                 file: "file",
+                moduleName: "b",
+                name: "a",
+                range: [21, 50],
                 source: "./b",
                 type: "Import",
-                name: "a",
             },
             {
                 file: "file",
+                moduleName: "d",
+                name: "c",
+                range: [81, 110],
                 source: "./d",
                 type: "Import",
-                name: "c",
             },
             {
                 file: "file",
-                source: "./e",
+                moduleName: null,
+                range: [111, 124],
                 type: "ImportAll",
+                source: "./e",
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -463,18 +499,26 @@ import './e';`;
         const result = (0, getRelativePath_1.getRelativePath)("/root/wow/tt.ts", "/root/hum/ugh/xx.ts");
         assert.deepEqual(result, "../hum/ugh/xx.ts");
     });
+    test("Remove File Extension", () => {
+        const result = (0, removeFileExtension_1.removeFileExtension)("/root/file.x.ts");
+        assert.deepEqual(result, "/root/file.x");
+    });
     test("Transform Imports", () => {
         const imp = {
             file: "/root/shared/component.ts",
             source: "../../misc",
             type: "Import",
             name: "default",
+            moduleName: "a",
+            range: [0, 0],
         };
         const goal = {
             file: "/root/shared/component",
             source: "/misc/index",
             type: "Import",
             name: "default",
+            moduleName: "a",
+            range: [0, 0],
         };
         const folders = new Set(["/root", "/root/shared", "/misc"]);
         const result = (0, transformImportPaths_1.transformImportPaths)(imp, folders);
@@ -498,6 +542,65 @@ import './e';`;
         const folders = new Set(["/root", "/root/shared", "/misc"]);
         const result = (0, transformImportPaths_1.transformExportPaths)(exp, folders);
         assert.deepEqual(result, goal);
+    });
+    test("Organize Imports", () => {
+        const code = `import { a } from './file';
+import { b } from './file';
+console.log(a, b);`;
+        const result = `import { a, b } from './file';
+console.log(a, b);`;
+        assert.deepEqual((0, organizeImports_1.organizeImports)(code), result);
+    });
+    test("String Helper Delete Ranges", () => {
+        const s = "abcdefghijk";
+        const ranges = [
+            [0, 1],
+            [0, 1],
+            [2, 5],
+            [2, 6],
+            [8, 10],
+        ];
+        const goal = "bghk";
+        assert.deepEqual((0, utils_1.deleteRanges)(s, ranges), goal);
+    });
+    test("Edit File Imports", () => {
+        const code = `import { a } from './a';
+console.log(a);`;
+        const oldImport = (0, parseImports_1.parseImports)(code, "file")[0];
+        const newImport = {
+            file: "/root/b",
+            source: "/root/a",
+            moduleName: "a",
+            name: "b",
+            range: [0, 0],
+            type: "Import",
+        };
+        const editted = (0, performImportEditsOnFile_1.performImportEditsOnFile)(code, [{ original: oldImport, next: [newImport] }], []);
+        const goal = `import { b as a } from './a';
+console.log(a);`;
+        assert.equal(editted, goal);
+    });
+    test("Edit File Exports", () => {
+        const code = `import { a } from './a';
+console.log(a);
+export { b } from './b'
+console.log('hi');`;
+        const oldExport = (0, parseExports_1.parseExports)(code, "file")[0];
+        const newExport = {
+            type: "ExportProxy",
+            range: [0, 0],
+            file: "/root/x",
+            source: "/root/c",
+            exportName: "c",
+            importName: "d",
+        };
+        const editted = (0, performImportEditsOnFile_1.performImportEditsOnFile)(code, [], [{ original: oldExport, next: [newExport] }]);
+        const goal = `import { a } from './a';
+console.log(a);
+console.log('hi');
+export { d as c } from './c';
+`;
+        assert.equal(editted, goal);
     });
 });
 //# sourceMappingURL=extension.test.js.map

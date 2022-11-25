@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getWorkspace = exports.generateUri = void 0;
+exports.deleteRanges = exports.getWorkspace = exports.generateUri = void 0;
 const vscode = require("vscode");
 let count = 0;
 function generateUri(scheme, title, extension) {
@@ -14,4 +14,21 @@ function getWorkspace() {
     return workspaceDirectory;
 }
 exports.getWorkspace = getWorkspace;
+function deleteRanges(str, ranges) {
+    const counts = Array(str.length + 1).fill(0);
+    for (const [a, b] of ranges) {
+        counts[a] += 1;
+        counts[b] -= 1;
+    }
+    let count = 0;
+    const result = [];
+    for (let i = 0; i < str.length; i += 1) {
+        count += counts[i];
+        if (count === 0) {
+            result.push(str[i]);
+        }
+    }
+    return result.join("");
+}
+exports.deleteRanges = deleteRanges;
 //# sourceMappingURL=utils.js.map

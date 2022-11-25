@@ -1,0 +1,1 @@
+{"version":3,"file":"isFile.js","sourceRoot":"","sources":["../../src/file-traverse/isFile.ts"],"names":[],"mappings":";;;AAAA,MAAM,EAAE,GAAG,OAAO,CAAC,IAAI,CAAC,CAAC;AAEzB,SAAgB,MAAM,CAAC,IAAY;IACjC,IAAI;QACF,OAAO,EAAE,CAAC,SAAS,CAAC,IAAI,CAAC,CAAC,MAAM,EAAE,CAAC;KACpC;IAAC,OAAO,CAAC,EAAE;QACV,OAAO,KAAK,CAAC;KACd;AACH,CAAC;AAND,wBAMC"}

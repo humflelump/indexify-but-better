@@ -2,16 +2,20 @@
 
 type ImportBase = {
   file: string;
+  fileWithExtension?: string;
   source: string;
+  range: [number, number];
 };
 
 export type BasicImport = {
   type: "Import";
   name: string;
+  moduleName: string;
 } & ImportBase;
 
 export type ImportAll = {
   type: "ImportAll";
+  moduleName: string | null;
 } & ImportBase;
 
 export type ImportNode = BasicImport | ImportAll;
@@ -21,6 +25,7 @@ export type ImportNode = BasicImport | ImportAll;
 type ExportBase = {
   range: [number, number];
   file: string;
+  fileWithExtension?: string;
 };
 
 export type NewExport = {
@@ -48,3 +53,15 @@ export type ExportNode = NewExport | ExportProxy | ExportAllProxy;
 export type NodeWithSource = ImportNode | ExportProxy | ExportAllProxy;
 
 export type AnyNode = ImportNode | ExportNode;
+
+// EDITS
+
+export type ImportTransform = {
+  original: ImportNode;
+  next: BasicImport[];
+};
+
+export type ExportTransform = {
+  original: ExportNode;
+  next: ExportProxy[];
+};

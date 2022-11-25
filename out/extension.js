@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.activate = void 0;
 const vscode = require("vscode");
+const deleteIndexFile_1 = require("./core/deleteIndexFile");
 const generateUnusedExports_1 = require("./core/generateUnusedExports");
 const generateVirtualIndex_1 = require("./core/generateVirtualIndex");
 const viewFolderImports_1 = require("./core/viewFolderImports");
@@ -35,6 +36,7 @@ function activate({ subscriptions }) {
                     await vscode.window.showTextDocument(doc, { preview: false });
                 }
                 catch (e) {
+                    vscode.window.showErrorMessage(`Error: ${e}`);
                     console.log(e);
                 }
             });
@@ -53,6 +55,9 @@ function activate({ subscriptions }) {
     });
     registerCommand("helloworld.folder_imports", async (workspaceDirectory, selectedPath) => {
         return (0, viewFolderImports_1.viewFolderImports)(workspaceDirectory, selectedPath);
+    });
+    registerCommand("helloworld.delete_index", async (workspaceDirectory, selectedPath) => {
+        return (0, deleteIndexFile_1.deleteIndexFile)(workspaceDirectory, selectedPath);
     });
 }
 exports.activate = activate;

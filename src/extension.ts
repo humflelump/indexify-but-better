@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { deleteIndexFile } from "./core/deleteIndexFile";
 import { generateUnusedExports } from "./core/generateUnusedExports";
 import { generateVirtualIndex } from "./core/generateVirtualIndex";
 import { viewFolderImports } from "./core/viewFolderImports";
@@ -57,6 +58,7 @@ export function activate({ subscriptions }: vscode.ExtensionContext) {
                 const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
                 await vscode.window.showTextDocument(doc, { preview: false });
               } catch (e) {
+                vscode.window.showErrorMessage(`Error: ${e}`);
                 console.log(e);
               }
             }
@@ -95,6 +97,13 @@ export function activate({ subscriptions }: vscode.ExtensionContext) {
     "helloworld.folder_imports",
     async (workspaceDirectory, selectedPath) => {
       return viewFolderImports(workspaceDirectory, selectedPath);
+    }
+  );
+
+  registerCommand(
+    "helloworld.delete_index",
+    async (workspaceDirectory, selectedPath) => {
+      return deleteIndexFile(workspaceDirectory, selectedPath);
     }
   );
 }
