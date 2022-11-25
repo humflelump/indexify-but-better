@@ -5,7 +5,7 @@ const getRelativePath_1 = require("../file-helpers/getRelativePath");
 const createGraph_1 = require("../graph/createGraph");
 const unusedExports_1 = require("../graph/unusedExports");
 function generateUnusedExports(workspaceDirectory, selectedDirectory) {
-    const graph = (0, createGraph_1.createGraph)(workspaceDirectory, workspaceDirectory);
+    const graph = (0, createGraph_1.createGraph)(workspaceDirectory);
     let nodes = (0, unusedExports_1.unusedExports)(graph, selectedDirectory);
     const sections = nodes.map((node) => {
         const to = node.file;

@@ -13,7 +13,7 @@ function activate({ subscriptions }) {
     const SCHEME = "exports";
     console.log("Running!");
     (0, warmUpCache_1.warmUpCache)();
-    function registerCommand(commandKey, callback) {
+    function registerCommand(commandKey, callback, options) {
         subscriptions.push(vscode.commands.registerCommand(commandKey, async (menuInfo) => {
             vscode.window.withProgress({ location: vscode.ProgressLocation.Notification }, async (reporter) => {
                 reporter.report({ message: "Processing..." });
@@ -31,9 +31,14 @@ function activate({ subscriptions }) {
                     if (!fileOutput) {
                         fileOutput = "Nothing To Show";
                     }
-                    const uri = vscode.Uri.parse((0, utils_1.generateUri)(SCHEME, "index", ".ts"));
-                    const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
-                    await vscode.window.showTextDocument(doc, { preview: false });
+                    if (options?.displayAsMessage) {
+                        vscode.window.showInformationMessage(fileOutput);
+                    }
+                    else {
+                        const uri = vscode.Uri.parse((0, utils_1.generateUri)(SCHEME, "index", ".ts"));
+                        const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
+                        await vscode.window.showTextDocument(doc, { preview: false });
+                    }
                 }
                 catch (e) {
                     vscode.window.showErrorMessage(`Error: ${e}`);
@@ -58,7 +63,7 @@ function activate({ subscriptions }) {
     });
     registerCommand("helloworld.delete_index", async (workspaceDirectory, selectedPath) => {
         return (0, deleteIndexFile_1.deleteIndexFile)(workspaceDirectory, selectedPath);
-    });
+    }, { displayAsMessage: true });
 }
 exports.activate = activate;
 //# sourceMappingURL=extension.js.map

@@ -6,7 +6,7 @@ const createGraph_1 = require("../graph/createGraph");
 const referenceCountOutOfFolder_1 = require("../graph/referenceCountOutOfFolder");
 const getRelativePath_1 = require("../file-helpers/getRelativePath");
 function generateVirtualIndex(workspaceDirectory, selectedDirectory) {
-    const graph = (0, createGraph_1.createGraph)(workspaceDirectory, workspaceDirectory);
+    const graph = (0, createGraph_1.createGraph)(workspaceDirectory);
     let nodes = (0, referenceCountOutOfFolder_1.referenceCountOutOfFolder)(graph, selectedDirectory);
     nodes = (0, lodash_1.sortBy)(nodes, (d) => -d.count);
     const sections = nodes.map((node) => {

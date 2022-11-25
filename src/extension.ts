@@ -17,7 +17,8 @@ export function activate({ subscriptions }: vscode.ExtensionContext) {
     callback: (
       workspaceDirectory: string,
       selectedPath: string
-    ) => Promise<string>
+    ) => Promise<string>,
+    options?: { displayAsMessage: boolean }
   ) {
     type ContextMenuInfo = {
       $mid: number; // 1
@@ -52,11 +53,15 @@ export function activate({ subscriptions }: vscode.ExtensionContext) {
                   fileOutput = "Nothing To Show";
                 }
 
-                const uri = vscode.Uri.parse(
-                  generateUri(SCHEME, "index", ".ts")
-                );
-                const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
-                await vscode.window.showTextDocument(doc, { preview: false });
+                if (options?.displayAsMessage) {
+                  vscode.window.showInformationMessage(fileOutput);
+                } else {
+                  const uri = vscode.Uri.parse(
+                    generateUri(SCHEME, "index", ".ts")
+                  );
+                  const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
+                  await vscode.window.showTextDocument(doc, { preview: false });
+                }
               } catch (e) {
                 vscode.window.showErrorMessage(`Error: ${e}`);
                 console.log(e);
@@ -104,6 +109,7 @@ export function activate({ subscriptions }: vscode.ExtensionContext) {
     "helloworld.delete_index",
     async (workspaceDirectory, selectedPath) => {
       return deleteIndexFile(workspaceDirectory, selectedPath);
-    }
+    },
+    { displayAsMessage: true }
   );
 }

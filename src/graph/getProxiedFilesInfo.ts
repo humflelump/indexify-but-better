@@ -21,7 +21,7 @@ type ProxiedFile = {
   exportedFromIndex: string;
 };
 
-export function transformImports(
+export function getProxiedFilesInfo(
   indexFile: string,
   proxiedFiles: ProxiedFile[],
   imports: ImportNode[]

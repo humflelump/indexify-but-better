@@ -10,7 +10,12 @@ export const memoizedParse: typeof parse = (code, options) => {
   try {
     result = parse(code, options);
   } catch (e) {
-    result = parse("", options);
+    try {
+      // jsx flag sometimes causes parsing errors
+      result = parse(code, { ...options, jsx: false });
+    } catch (e) {
+      result = parse("", options);
+    }
   }
 
   cache[code] = result;

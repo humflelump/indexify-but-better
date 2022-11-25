@@ -7,7 +7,7 @@ export function generateVirtualIndex(
   workspaceDirectory: string,
   selectedDirectory: string
 ) {
-  const graph = createGraph(workspaceDirectory, workspaceDirectory);
+  const graph = createGraph(workspaceDirectory);
   let nodes = referenceCountOutOfFolder(graph, selectedDirectory);
   nodes = sortBy(nodes, (d) => -d.count);
   const sections = nodes.map((node) => {

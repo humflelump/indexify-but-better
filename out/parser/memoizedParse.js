@@ -12,7 +12,13 @@ const memoizedParse = (code, options) => {
         result = (0, typescript_estree_1.parse)(code, options);
     }
     catch (e) {
-        result = (0, typescript_estree_1.parse)("", options);
+        try {
+            // jsx flag sometimes causes parsing errors
+            result = (0, typescript_estree_1.parse)(code, { ...options, jsx: false });
+        }
+        catch (e) {
+            result = (0, typescript_estree_1.parse)("", options);
+        }
     }
     cache[code] = result;
     return result;

@@ -12,14 +12,14 @@ import { parseImports } from "../parser/parseImports";
 import { ExportNode, ImportNode } from "../types";
 import { ExportGraph } from "./Graph";
 
-export function createGraph(innerDirectory: string, outerDirectory: string) {
-  const allFolders = getAllFoldersInFolder(outerDirectory);
+export function createGraph(directory: string) {
+  const allFolders = getAllFoldersInFolder(directory);
   const allFoldersSet = new Set(allFolders);
-  const innerFiles = getAllFilesInFolder(innerDirectory);
-  const outerFiles = getAllFilesInFolder(outerDirectory);
+  const files = getAllFilesInFolder(directory);
 
   const exps: ExportNode[] = [];
-  innerFiles.forEach((file) => {
+  const imps: ImportNode[] = [];
+  files.forEach((file) => {
     const code = readFileContents(file);
     try {
       const parsed = parseExports(code, file);
@@ -27,11 +27,6 @@ export function createGraph(innerDirectory: string, outerDirectory: string) {
     } catch (e) {
       console.log(`Failed parsing imports for ${file}: ${e}`);
     }
-  });
-
-  const imps: ImportNode[] = [];
-  outerFiles.forEach((file) => {
-    const code = readFileContents(file);
     try {
       const parsed = parseImports(code, file);
       imps.push(...parsed.map((n) => transformImportPaths(n, allFoldersSet)));

@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.indexFileImports = exports.transformExports = exports.transformImports = void 0;
+exports.indexFileImports = exports.transformExports = exports.getProxiedFilesInfo = void 0;
 const lodash_1 = require("lodash");
 const readFileContents_1 = require("../file-helpers/readFileContents");
 const removeFileExtension_1 = require("../file-helpers/removeFileExtension");
 const parseExports_1 = require("../parser/parseExports");
 const parseImports_1 = require("../parser/parseImports");
-function transformImports(indexFile, proxiedFiles, imports) {
+function getProxiedFilesInfo(indexFile, proxiedFiles, imports) {
     const indexedImports = (0, lodash_1.keyBy)(proxiedFiles, (d) => d.exportedFromIndex);
     const result = [];
     imports.forEach((node) => {
@@ -43,7 +43,7 @@ function transformImports(indexFile, proxiedFiles, imports) {
     });
     return result;
 }
-exports.transformImports = transformImports;
+exports.getProxiedFilesInfo = getProxiedFilesInfo;
 function transformExports(indexFile, proxiedFiles, exports) {
     const indexedExports = (0, lodash_1.keyBy)(proxiedFiles, (d) => d.exportedFromIndex);
     const result = [];

@@ -9,8 +9,8 @@ import { createGraph } from "../graph/createGraph";
 import {
   indexFileImports,
   transformExports,
-  transformImports,
-} from "../graph/indexFileImports";
+  getProxiedFilesInfo,
+} from "../graph/getProxiedFilesInfo";
 import { performImportEditsOnFile } from "../parser/performImportEditsOnFile";
 import { ExportNode, ImportNode } from "../types";
 
@@ -21,7 +21,7 @@ export function deleteIndexFile(
   if (isFile(selectedDirectory)) {
     throw Error("Must select a folder");
   }
-  const graph = createGraph(workspaceDirectory, workspaceDirectory);
+  const graph = createGraph(workspaceDirectory);
   const indexFiles = getIndexFilesInFolder(selectedDirectory);
   if (indexFiles.length === 0) {
     throw Error("No index files found");
@@ -60,7 +60,7 @@ export function deleteIndexFile(
       proxied,
       exports
     );
-    const importsToFix = transformImports(
+    const importsToFix = getProxiedFilesInfo(
       indexFileNoExtension,
       proxied,
       imports
@@ -79,12 +79,5 @@ export function deleteIndexFile(
     writeToFile(edit.file, edit.newCode);
   }
   deleteFile(indexFile);
-  return JSON.stringify(
-    {
-      status: "Success!",
-      edits,
-    },
-    undefined,
-    2
-  );
+  return `Done! ${edits.length} File${edits.length === 1 ? "" : "s"} Editted.`;
 }

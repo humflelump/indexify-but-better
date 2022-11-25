@@ -6,7 +6,7 @@ export function generateUnusedExports(
   workspaceDirectory: string,
   selectedDirectory: string
 ) {
-  const graph = createGraph(workspaceDirectory, workspaceDirectory);
+  const graph = createGraph(workspaceDirectory);
   let nodes = unusedExports(graph, selectedDirectory);
   const sections = nodes.map((node) => {
     const to = node.file;
