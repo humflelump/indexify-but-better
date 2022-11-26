@@ -64,7 +64,7 @@ function groupByPath<T extends NodeWithSource>(nodes: T[]) {
   return groupedByPath;
 }
 
-export function createCodeForImports(imports: BasicImport[]) {
+function createCodeForImports(imports: BasicImport[]) {
   const groupedByPath = groupByPath(imports);
   const statements = Object.keys(groupedByPath).map((path) => {
     let imports = groupedByPath[path];
@@ -102,5 +102,5 @@ export function createCodeForExports(exports: ExportProxy[]) {
     });
     return `export { ${variables.join(", ")} } from '${path}';`;
   });
-  return statements.join("\n");
+  return statements.join("\n") + "\n";
 }

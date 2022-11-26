@@ -13,7 +13,7 @@ export type BasicImport = {
   moduleName: string;
 } & ImportBase;
 
-export type ImportAll = {
+type ImportAll = {
   type: "ImportAll";
   moduleName: string | null;
 } & ImportBase;
@@ -40,7 +40,7 @@ export type ExportProxy = {
   importName: string;
 } & ExportBase;
 
-export type ExportAllProxy = {
+type ExportAllProxy = {
   type: "ExportAllProxy";
   source: string;
   exportName: string | null;

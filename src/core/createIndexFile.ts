@@ -29,13 +29,6 @@ export function createIndexFile(
     throw Error(`Multiple index files found: ${indexFiles.join(", ")}`);
   }
   if (indexFiles.length === 1) {
-    // console.log("a", Date.now());
-    // deleteIndexFile(workspaceDirectory, selectedDirectory, true);
-    // console.log("b", Date.now());
-    // setTimeout(() => {
-    //   console.log("c", Date.now());
-    //   createIndexFile(workspaceDirectory, selectedDirectory, true);
-    // }, 1000);
     deleteIndexFile(workspaceDirectory, selectedDirectory, true);
     return createIndexFile(workspaceDirectory, selectedDirectory, true);
   }

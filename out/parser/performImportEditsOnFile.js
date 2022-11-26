@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCodeForExports = exports.createCodeForImports = exports.performImportEditsOnFile = void 0;
+exports.createCodeForExports = exports.performImportEditsOnFile = void 0;
 const lodash_1 = require("lodash");
 const constants_1 = require("../constants");
 const getRelativePath_1 = require("../file-helpers/getRelativePath");
@@ -80,7 +80,6 @@ function createCodeForImports(imports) {
     });
     return statements.join("\n");
 }
-exports.createCodeForImports = createCodeForImports;
 function createCodeForExports(exports) {
     const groupedByPath = groupByPath(exports);
     const statements = Object.keys(groupedByPath).map((path) => {
@@ -95,7 +94,7 @@ function createCodeForExports(exports) {
         });
         return `export { ${variables.join(", ")} } from '${path}';`;
     });
-    return statements.join("\n");
+    return statements.join("\n") + "\n";
 }
 exports.createCodeForExports = createCodeForExports;
 //# sourceMappingURL=performImportEditsOnFile.js.map
