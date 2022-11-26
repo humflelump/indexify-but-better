@@ -66,7 +66,6 @@ function activate({ subscriptions }) {
         return (0, deleteIndexFile_1.deleteIndexFile)(workspaceDirectory, selectedPath);
     }, { displayAsMessage: true });
     registerCommand("helloworld.create_index", async (workspaceDirectory, selectedPath) => {
-        vscode.window.showInformationMessage("Test?");
         return (0, createIndexFile_1.createIndexFile)(workspaceDirectory, selectedPath);
     }, { displayAsMessage: true });
 }

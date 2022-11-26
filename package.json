@@ -83,6 +83,7 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.189",
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.0",
     "@types/node": "16.x",
@@ -96,14 +97,8 @@
     "prettier": "^2.6.2"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.189",
     "@typescript-eslint/typescript-estree": "^5.44.0",
-    "abstract-syntax-tree": "^2.20.6",
-    "es-module-lexer": "^1.1.0",
     "lodash": "^4.17.21",
-    "parse-imports": "^1.1.0",
-    "ts-morph": "^17.0.1",
-    "ts-unused-exports": "^8.0.0",
     "var-validator": "^0.0.3",
     "typescript": "^4.9.3"
   }
