@@ -1,4 +1,4 @@
-## What this project does
+## IndexifyButBetter
 
 This Project has 3 main features
 
