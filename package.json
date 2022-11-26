@@ -30,6 +30,10 @@
       {
         "command": "helloworld.delete_index",
         "title": "Delete Index File"
+      },
+      {
+        "command": "helloworld.create_index",
+        "title": "Create Index File"
       }
     ],
     "menus": {
@@ -52,6 +56,11 @@
         {
           "when": "resourceExtname != .ts && resourceExtname != .tsx && resourceExtname != .js && resourceExtname != .jsx",
           "command": "helloworld.delete_index",
+          "group": "YourGroup@1"
+        },
+        {
+          "when": "resourceExtname != .ts && resourceExtname != .tsx && resourceExtname != .js && resourceExtname != .jsx",
+          "command": "helloworld.create_index",
           "group": "YourGroup@1"
         }
       ]

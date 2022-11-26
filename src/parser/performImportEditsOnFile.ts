@@ -1,4 +1,4 @@
-import { flatten } from "lodash";
+import { flatten, groupBy } from "lodash";
 import { PARSER_OPTIONS } from "../constants";
 import { getRelativePath } from "../file-helpers/getRelativePath";
 import {
@@ -74,4 +74,22 @@ export function performImportEditsOnFile(
   }
   code = organizeImports(code);
   return codeBeforeImports + code;
+}
+
+export function createCodeForExports(exports: ExportProxy[]) {
+  const groupedByPath = groupBy(exports, (d) =>
+    getRelativePath(d.file, d.source)
+  );
+  const statements = Object.keys(groupedByPath).map((path) => {
+    const exports = groupedByPath[path];
+    const variables = exports.map((exp) => {
+      if (exp.exportName === exp.importName) {
+        return exp.importName;
+      } else {
+        return `${exp.importName} as ${exp.exportName}`;
+      }
+    });
+    return `export { ${variables.join(", ")} } from '${path}';`;
+  });
+  return statements.join("\n");
 }

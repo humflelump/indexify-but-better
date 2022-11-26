@@ -140,9 +140,7 @@ export function deleteIndexFileInfo(graph: ExportGraph, indexFile: string) {
   const proxiedFiles: ProxiedFile[] = [];
 
   for (const node of newExports) {
-    let prevNode: AnyNode = node;
-    let prevVariable: string = node.name;
-    graph.traverse(node, (next, variable) => {
+    graph.traverse(node, (next, variable, prevNode, prevVariable) => {
       if (next.file === fileWithoutExtension) {
         proxiedFiles.push({
           indexFile: fileWithoutExtension,
@@ -151,8 +149,6 @@ export function deleteIndexFileInfo(graph: ExportGraph, indexFile: string) {
           exportedFromIndex: variable,
         });
       }
-      prevNode = next;
-      prevVariable = variable;
     });
   }
 

@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { createIndexFile } from "./core/createIndexFile";
 import { deleteIndexFile } from "./core/deleteIndexFile";
 import { generateUnusedExports } from "./core/generateUnusedExports";
 import { generateVirtualIndex } from "./core/generateVirtualIndex";
@@ -109,6 +110,14 @@ export function activate({ subscriptions }: vscode.ExtensionContext) {
     "helloworld.delete_index",
     async (workspaceDirectory, selectedPath) => {
       return deleteIndexFile(workspaceDirectory, selectedPath);
+    },
+    { displayAsMessage: true }
+  );
+
+  registerCommand(
+    "helloworld.create_index",
+    async (workspaceDirectory, selectedPath) => {
+      return createIndexFile(workspaceDirectory, selectedPath);
     },
     { displayAsMessage: true }
   );

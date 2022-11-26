@@ -20,7 +20,7 @@ class ExportGraph {
             for (const child of possibleChildren) {
                 if (child.type === "ExportProxy") {
                     if (child.importName === variable) {
-                        callback(child, child.exportName);
+                        callback(child, child.exportName, node, variable);
                         traverse(child, child.exportName, visits);
                     }
                 }
@@ -29,20 +29,20 @@ class ExportGraph {
                         return;
                     }
                     const newVariable = child.exportName ? child.exportName : variable;
-                    callback(child, newVariable);
+                    callback(child, newVariable, node, variable);
                     traverse(child, newVariable, visits);
                 }
                 else if (child.type === "Import") {
                     if (child.name === variable) {
-                        callback(child, variable);
+                        callback(child, variable, node, variable);
                     }
                 }
                 else if (child.type === "ImportAll") {
-                    callback(child, variable);
+                    callback(child, variable, node, variable);
                 }
             }
         };
-        callback(node, node.name);
+        callback(node, node.name, node, node.name);
         traverse(node, node.name, new Set());
     }
     getNodes() {
