@@ -13,3 +13,7 @@ This Project has 3 main features
 ## Deleting Index Files
 
 ![](media/delete-index.gif)
+
+## Folder I/O
+
+![](media/public-api.gif)

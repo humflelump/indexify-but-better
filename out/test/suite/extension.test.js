@@ -8,10 +8,8 @@ const getAbsolutePath_1 = require("../../file-helpers/getAbsolutePath");
 const getRelativePath_1 = require("../../file-helpers/getRelativePath");
 const removeFileExtension_1 = require("../../file-helpers/removeFileExtension");
 const transformImportPaths_1 = require("../../file-helpers/transformImportPaths");
-const organizeImports_1 = require("../../parser/organizeImports");
 const parseExports_1 = require("../../parser/parseExports");
 const parseImports_1 = require("../../parser/parseImports");
-const performImportEditsOnFile_1 = require("../../parser/performImportEditsOnFile");
 const utils_1 = require("../../utils");
 // import * as myExtension from '../../extension';
 suite("Extension Test Suite", () => {
@@ -545,14 +543,14 @@ import './e';`;
         const result = (0, transformImportPaths_1.transformExportPaths)(exp, folders);
         assert.deepEqual(result, goal);
     });
-    test("Organize Imports", () => {
-        const code = `import { a } from './file';
-import { b } from './file';
-console.log(a, b);`;
-        const result = `import { a, b } from './file';
-console.log(a, b);`;
-        assert.deepEqual((0, organizeImports_1.organizeImports)(code), result);
-    });
+    //   test("Organize Imports", () => {
+    //     const code = `import { a } from './file';
+    // import { b } from './file';
+    // console.log(a, b);`;
+    //     const result = `import { a, b } from './file';
+    // console.log(a, b);`;
+    //     assert.deepEqual(organizeImports(code), result);
+    //   });
     test("String Helper Delete Ranges", () => {
         const s = "abcdefghijk";
         const ranges = [
@@ -565,44 +563,52 @@ console.log(a, b);`;
         const goal = "bghk";
         assert.deepEqual((0, utils_1.deleteRanges)(s, ranges), goal);
     });
-    test("Edit File Imports", () => {
-        const code = `import { a } from './a';
-console.log(a);`;
-        const oldImport = (0, parseImports_1.parseImports)(code, "file")[0];
-        const newImport = {
-            file: "/root/b",
-            source: "/root/a",
-            moduleName: "a",
-            name: "b",
-            range: [0, 0],
-            type: "Import",
-        };
-        const editted = (0, performImportEditsOnFile_1.performImportEditsOnFile)(code, [{ original: oldImport, next: [newImport] }], []);
-        const goal = `import { b as a } from './a';
-console.log(a);`;
-        assert.equal(editted, goal);
-    });
-    test("Edit File Exports", () => {
-        const code = `import { a } from './a';
-console.log(a);
-export { b } from './b'
-console.log('hi');`;
-        const oldExport = (0, parseExports_1.parseExports)(code, "file")[0];
-        const newExport = {
-            type: "ExportProxy",
-            range: [0, 0],
-            file: "/root/x",
-            source: "/root/c",
-            exportName: "c",
-            importName: "d",
-        };
-        const editted = (0, performImportEditsOnFile_1.performImportEditsOnFile)(code, [], [{ original: oldExport, next: [newExport] }]);
-        const goal = `import { a } from './a';
-console.log(a);
-console.log('hi');
-export { d as c } from './c';
-`;
-        assert.equal(editted, goal);
-    });
+    //   test("Edit File Imports", () => {
+    //     const code = `import { a } from './a';
+    // console.log(a);`;
+    //     const oldImport = parseImports(code, "file")[0];
+    //     const newImport: BasicImport = {
+    //       file: "/root/b",
+    //       source: "/root/a",
+    //       moduleName: "a",
+    //       name: "b",
+    //       range: [0, 0],
+    //       type: "Import",
+    //     };
+    //     const editted = performImportEditsOnFile(
+    //       code,
+    //       [{ original: oldImport, next: [newImport] }],
+    //       []
+    //     );
+    //     const goal = `import { b as a } from './a';
+    // console.log(a);`;
+    //     assert.equal(editted, goal);
+    //   });
+    //   test("Edit File Exports", () => {
+    //     const code = `import { a } from './a';
+    // console.log(a);
+    // export { b } from './b'
+    // console.log('hi');`;
+    //     const oldExport = parseExports(code, "file")[0];
+    //     const newExport: ExportProxy = {
+    //       type: "ExportProxy",
+    //       range: [0, 0],
+    //       file: "/root/x",
+    //       source: "/root/c",
+    //       exportName: "c",
+    //       importName: "d",
+    //     };
+    //     const editted = performImportEditsOnFile(
+    //       code,
+    //       [],
+    //       [{ original: oldExport, next: [newExport] }]
+    //     );
+    //     const goal = `import { a } from './a';
+    // console.log(a);
+    // console.log('hi');
+    // export { d as c } from './c';
+    // `;
+    //     assert.equal(editted, goal);
+    //   });
 });
 //# sourceMappingURL=extension.test.js.map

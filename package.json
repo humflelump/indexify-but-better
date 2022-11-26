@@ -97,6 +97,7 @@
     "lodash": "^4.17.21",
     "parse-imports": "^1.1.0",
     "ts-morph": "^17.0.1",
-    "ts-unused-exports": "^8.0.0"
+    "ts-unused-exports": "^8.0.0",
+    "var-validator": "^0.0.3"
   }
 }

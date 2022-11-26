@@ -585,15 +585,15 @@ import './e';`;
     assert.deepEqual(result, goal);
   });
 
-  test("Organize Imports", () => {
-    const code = `import { a } from './file';
-import { b } from './file';
-console.log(a, b);`;
+  //   test("Organize Imports", () => {
+  //     const code = `import { a } from './file';
+  // import { b } from './file';
+  // console.log(a, b);`;
 
-    const result = `import { a, b } from './file';
-console.log(a, b);`;
-    assert.deepEqual(organizeImports(code), result);
-  });
+  //     const result = `import { a, b } from './file';
+  // console.log(a, b);`;
+  //     assert.deepEqual(organizeImports(code), result);
+  //   });
 
   test("String Helper Delete Ranges", () => {
     const s = "abcdefghijk";
@@ -608,60 +608,60 @@ console.log(a, b);`;
     assert.deepEqual(deleteRanges(s, ranges), goal);
   });
 
-  test("Edit File Imports", () => {
-    const code = `import { a } from './a';
-console.log(a);`;
+  //   test("Edit File Imports", () => {
+  //     const code = `import { a } from './a';
+  // console.log(a);`;
 
-    const oldImport = parseImports(code, "file")[0];
+  //     const oldImport = parseImports(code, "file")[0];
 
-    const newImport: BasicImport = {
-      file: "/root/b",
-      source: "/root/a",
-      moduleName: "a",
-      name: "b",
-      range: [0, 0],
-      type: "Import",
-    };
+  //     const newImport: BasicImport = {
+  //       file: "/root/b",
+  //       source: "/root/a",
+  //       moduleName: "a",
+  //       name: "b",
+  //       range: [0, 0],
+  //       type: "Import",
+  //     };
 
-    const editted = performImportEditsOnFile(
-      code,
-      [{ original: oldImport, next: [newImport] }],
-      []
-    );
+  //     const editted = performImportEditsOnFile(
+  //       code,
+  //       [{ original: oldImport, next: [newImport] }],
+  //       []
+  //     );
 
-    const goal = `import { b as a } from './a';
-console.log(a);`;
-    assert.equal(editted, goal);
-  });
+  //     const goal = `import { b as a } from './a';
+  // console.log(a);`;
+  //     assert.equal(editted, goal);
+  //   });
 
-  test("Edit File Exports", () => {
-    const code = `import { a } from './a';
-console.log(a);
-export { b } from './b'
-console.log('hi');`;
+  //   test("Edit File Exports", () => {
+  //     const code = `import { a } from './a';
+  // console.log(a);
+  // export { b } from './b'
+  // console.log('hi');`;
 
-    const oldExport = parseExports(code, "file")[0];
+  //     const oldExport = parseExports(code, "file")[0];
 
-    const newExport: ExportProxy = {
-      type: "ExportProxy",
-      range: [0, 0],
-      file: "/root/x",
-      source: "/root/c",
-      exportName: "c",
-      importName: "d",
-    };
+  //     const newExport: ExportProxy = {
+  //       type: "ExportProxy",
+  //       range: [0, 0],
+  //       file: "/root/x",
+  //       source: "/root/c",
+  //       exportName: "c",
+  //       importName: "d",
+  //     };
 
-    const editted = performImportEditsOnFile(
-      code,
-      [],
-      [{ original: oldExport, next: [newExport] }]
-    );
+  //     const editted = performImportEditsOnFile(
+  //       code,
+  //       [],
+  //       [{ original: oldExport, next: [newExport] }]
+  //     );
 
-    const goal = `import { a } from './a';
-console.log(a);
-console.log('hi');
-export { d as c } from './c';
-`;
-    assert.equal(editted, goal);
-  });
+  //     const goal = `import { a } from './a';
+  // console.log(a);
+  // console.log('hi');
+  // export { d as c } from './c';
+  // `;
+  //     assert.equal(editted, goal);
+  //   });
 });
