@@ -17,8 +17,10 @@ function activate({ subscriptions }) {
     function registerCommand(commandKey, callback, options) {
         subscriptions.push(vscode.commands.registerCommand(commandKey, async (menuInfo) => {
             vscode.window.withProgress({ location: vscode.ProgressLocation.Notification }, async (reporter) => {
-                reporter.report({ message: "Processing..." });
-                await new Promise((res) => setTimeout(res, 0));
+                if ((0, utils_1.getUnsavedDocuments)().length > 0) {
+                    vscode.window.showErrorMessage(`Please Save All Files Before Running (cmd-option-s)`);
+                    return;
+                }
                 const workspaceDirectory = (0, utils_1.getWorkspace)();
                 const selectedPath = menuInfo.fsPath;
                 if (!workspaceDirectory) {
@@ -27,6 +29,8 @@ function activate({ subscriptions }) {
                 if (!selectedPath) {
                     return vscode.window.showInformationMessage("No Selected Path");
                 }
+                reporter.report({ message: "Processing..." });
+                await new Promise((res) => setTimeout(res, 0));
                 try {
                     fileOutput = await callback(workspaceDirectory, selectedPath);
                     if (!fileOutput) {

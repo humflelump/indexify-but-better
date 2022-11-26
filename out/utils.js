@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isValidJsVariable = exports.deleteRanges = exports.getWorkspace = exports.generateUri = void 0;
+exports.getUnsavedDocuments = exports.isValidJsVariable = exports.deleteRanges = exports.getWorkspace = exports.generateUri = void 0;
 const vscode = require("vscode");
 let count = 0;
 function generateUri(scheme, title, extension) {
@@ -36,4 +36,8 @@ function isValidJsVariable(s) {
     return varVal.isValid(s);
 }
 exports.isValidJsVariable = isValidJsVariable;
+function getUnsavedDocuments() {
+    return vscode.workspace.textDocuments.filter((i) => i.isDirty || i.isUntitled);
+}
+exports.getUnsavedDocuments = getUnsavedDocuments;
 //# sourceMappingURL=utils.js.map

@@ -35,3 +35,9 @@ var varVal = require("var-validator");
 export function isValidJsVariable(s: string): boolean {
   return varVal.isValid(s);
 }
+
+export function getUnsavedDocuments() {
+  return vscode.workspace.textDocuments.filter(
+    (i) => i.isDirty || i.isUntitled
+  );
+}

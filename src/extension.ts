@@ -5,7 +5,7 @@ import { generateUnusedExports } from "./core/generateUnusedExports";
 import { generateVirtualIndex } from "./core/generateVirtualIndex";
 import { viewFolderImports } from "./core/viewFolderImports";
 import { warmUpCache } from "./parser/warmUpCache";
-import { generateUri, getWorkspace } from "./utils";
+import { generateUri, getUnsavedDocuments, getWorkspace } from "./utils";
 
 export function activate({ subscriptions }: vscode.ExtensionContext) {
   let fileOutput = "";
@@ -35,8 +35,12 @@ export function activate({ subscriptions }: vscode.ExtensionContext) {
           vscode.window.withProgress(
             { location: vscode.ProgressLocation.Notification },
             async (reporter) => {
-              reporter.report({ message: "Processing..." });
-              await new Promise((res) => setTimeout(res, 0));
+              if (getUnsavedDocuments().length > 0) {
+                vscode.window.showErrorMessage(
+                  `Please Save All Files Before Running (cmd-option-s)`
+                );
+                return;
+              }
               const workspaceDirectory = getWorkspace();
               const selectedPath = menuInfo.fsPath;
               if (!workspaceDirectory) {
@@ -47,6 +51,8 @@ export function activate({ subscriptions }: vscode.ExtensionContext) {
               if (!selectedPath) {
                 return vscode.window.showInformationMessage("No Selected Path");
               }
+              reporter.report({ message: "Processing..." });
+              await new Promise((res) => setTimeout(res, 0));
               try {
                 fileOutput = await callback(workspaceDirectory, selectedPath);
 
