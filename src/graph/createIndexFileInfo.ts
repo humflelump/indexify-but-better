@@ -6,16 +6,24 @@ import {
   ExportTransform,
   ImportTransform,
   NewExport,
-  NodeWithSource,
 } from "../types";
 import { ExportGraph } from "./Graph";
+
+var varVal = require("var-validator");
 
 const createVariableGenerator = () => {
   let varCounter = 0;
   let varSet = new Set<string>();
-  function genVariable(variable: string) {
-    let potentialVariable = variable;
-    while (varSet.has(potentialVariable)) {
+  function genVariable(variable: string, secondary: string) {
+    if (!varSet.has(variable)) {
+      varSet.add(variable);
+      return variable;
+    }
+    let potentialVariable = secondary;
+    while (
+      varSet.has(potentialVariable) ||
+      !varVal.isValid(potentialVariable)
+    ) {
       varCounter += 1;
       potentialVariable = `${variable}_RENAME_${varCounter}`;
     }
@@ -76,7 +84,12 @@ export function createIndexFileInfo(
     const list = groupedByExport[key];
     const exportNode = list[0].exportNode;
     const exportVariable = list[0].exportVariable;
-    const proxiedVariable = genVariable(exportVariable);
+    const possibleName = (function getFilename() {
+      const split = exportNode.file.split("/");
+      return String(split[split.length - 1]);
+    })();
+
+    const proxiedVariable = genVariable(exportVariable, possibleName);
     const indexProxy: ExportProxy = {
       type: "ExportProxy",
       file: selectedDirectory + "/index",
