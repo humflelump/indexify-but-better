@@ -64,7 +64,7 @@ export function activate({ subscriptions }: vscode.ExtensionContext) {
                   await vscode.window.showTextDocument(doc, { preview: false });
                 }
               } catch (e) {
-                vscode.window.showErrorMessage(`Error: ${e}`);
+                vscode.window.showErrorMessage(String(e));
                 console.log(e);
               }
             }

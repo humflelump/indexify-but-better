@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateVirtualIndex = void 0;
 const lodash_1 = require("lodash");
+const getRelativePath_1 = require("../file-helpers/getRelativePath");
 const createGraph_1 = require("../graph/createGraph");
 const referenceCountOutOfFolder_1 = require("../graph/referenceCountOutOfFolder");
-const getRelativePath_1 = require("../file-helpers/getRelativePath");
 function generateVirtualIndex(workspaceDirectory, selectedDirectory) {
     const graph = (0, createGraph_1.createGraph)(workspaceDirectory);
     let nodes = (0, referenceCountOutOfFolder_1.referenceCountOutOfFolder)(graph, selectedDirectory);

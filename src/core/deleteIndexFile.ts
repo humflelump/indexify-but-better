@@ -2,15 +2,14 @@ import { groupBy, keys } from "lodash";
 import { deleteFile } from "../file-helpers/deleteFile";
 import { folderForClickedIndexFile } from "../file-helpers/folderForClickedIndexFile";
 import { getIndexFilesInFolder } from "../file-helpers/getIndexFilesInFolder";
-import { isFile } from "../file-helpers/isFile";
 import { readFileContents } from "../file-helpers/readFileContents";
 import { removeFileExtension } from "../file-helpers/removeFileExtension";
 import { writeToFile } from "../file-helpers/writeToFile";
 import { createGraph } from "../graph/createGraph";
 import {
   deleteIndexFileInfo,
-  transformExports,
   getProxiedFilesInfo,
+  transformExports,
 } from "../graph/deleteIndexFileInfo";
 import { performImportEditsOnFile } from "../parser/performImportEditsOnFile";
 import { ExportNode, ImportNode } from "../types";

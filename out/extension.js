@@ -42,7 +42,7 @@ function activate({ subscriptions }) {
                     }
                 }
                 catch (e) {
-                    vscode.window.showErrorMessage(`Error: ${e}`);
+                    vscode.window.showErrorMessage(String(e));
                     console.log(e);
                 }
             });

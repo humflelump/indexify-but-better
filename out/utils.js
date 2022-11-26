@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteRanges = exports.getWorkspace = exports.generateUri = void 0;
+exports.isValidJsVariable = exports.deleteRanges = exports.getWorkspace = exports.generateUri = void 0;
 const vscode = require("vscode");
 let count = 0;
 function generateUri(scheme, title, extension) {
@@ -31,4 +31,9 @@ function deleteRanges(str, ranges) {
     return result.join("");
 }
 exports.deleteRanges = deleteRanges;
+var varVal = require("var-validator");
+function isValidJsVariable(s) {
+    return varVal.isValid(s);
+}
+exports.isValidJsVariable = isValidJsVariable;
 //# sourceMappingURL=utils.js.map

@@ -1,7 +1,7 @@
 {
-  "name": "helloworld",
-  "displayName": "HelloWorld",
-  "description": "test",
+  "name": "indexify-but-better",
+  "displayName": "IndexifyButBetter",
+  "description": "Maintains index files in JS/TS apps",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.73.0"

@@ -1,6 +1,5 @@
 import { ALLOWED_ENTENSIONS } from "../constants";
 import { isFile } from "./isFile";
-import { readFileContents } from "./readFileContents";
 
 export function getIndexFilesInFolder(folder: string) {
   const result: string[] = [];

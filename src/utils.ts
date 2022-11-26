@@ -30,3 +30,8 @@ export function deleteRanges(str: string, ranges: [number, number][]) {
   }
   return result.join("");
 }
+
+var varVal = require("var-validator");
+export function isValidJsVariable(s: string): boolean {
+  return varVal.isValid(s);
+}

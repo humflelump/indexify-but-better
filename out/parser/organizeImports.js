@@ -42,9 +42,4 @@ function organizeImports(code) {
     //   return result;
 }
 exports.organizeImports = organizeImports;
-// const code = `/* eslint-disable react/no-unescaped-entities */
-// import { NewIcon } from './w';
-// import { NewIcons } from '@eog/geode-iconsv2';
-// console.log('')`;
-// console.log(organizeImports(code));
 //# sourceMappingURL=organizeImports.js.map

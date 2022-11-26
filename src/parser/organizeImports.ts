@@ -42,11 +42,3 @@ export function organizeImports(code: string) {
   //   const result = sourceFile.getText();
   //   return result;
 }
-
-// const code = `/* eslint-disable react/no-unescaped-entities */
-// import { NewIcon } from './w';
-// import { NewIcons } from '@eog/geode-iconsv2';
-
-// console.log('')`;
-
-// console.log(organizeImports(code));

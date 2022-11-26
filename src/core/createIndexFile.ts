@@ -2,7 +2,6 @@ import { groupBy, uniq } from "lodash";
 import { createNewFile } from "../file-helpers/createNewFile";
 import { folderForClickedIndexFile } from "../file-helpers/folderForClickedIndexFile";
 import { getIndexFilesInFolder } from "../file-helpers/getIndexFilesInFolder";
-import { isFile } from "../file-helpers/isFile";
 import { isFolderMostlyJsFiles } from "../file-helpers/isFolderMostlyJsFiles";
 import { readFileContents } from "../file-helpers/readFileContents";
 import { writeToFile } from "../file-helpers/writeToFile";

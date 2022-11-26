@@ -1,7 +1,5 @@
-import { groupBy, orderBy } from "lodash";
-import { getAbsolutePath } from "../file-helpers/getAbsolutePath";
-import { getAllFilesInFolder } from "../file-helpers/getAllFilesInFolder";
-import { AnyNode, ExportNode, NewExport, NodeWithSource } from "../types";
+import { groupBy } from "lodash";
+import { AnyNode, NewExport, NodeWithSource } from "../types";
 
 export class ExportGraph {
   groupByImport: { [source: string]: NodeWithSource[] } = {};

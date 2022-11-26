@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-var fs = require("fs");
+const fs = require("fs");
 
 export function writeToFile(file: string, content: string, useFs: boolean) {
   if (useFs) {

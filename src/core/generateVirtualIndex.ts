@@ -1,7 +1,7 @@
 import { sortBy } from "lodash";
+import { getRelativePath } from "../file-helpers/getRelativePath";
 import { createGraph } from "../graph/createGraph";
 import { referenceCountOutOfFolder } from "../graph/referenceCountOutOfFolder";
-import { getRelativePath } from "../file-helpers/getRelativePath";
 
 export function generateVirtualIndex(
   workspaceDirectory: string,

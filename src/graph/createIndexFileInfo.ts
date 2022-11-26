@@ -7,9 +7,8 @@ import {
   ImportTransform,
   NewExport,
 } from "../types";
+import { isValidJsVariable } from "../utils";
 import { ExportGraph } from "./Graph";
-
-var varVal = require("var-validator");
 
 const createVariableGenerator = () => {
   let varCounter = 0;
@@ -22,7 +21,7 @@ const createVariableGenerator = () => {
     let potentialVariable = secondary;
     while (
       varSet.has(potentialVariable) ||
-      !varVal.isValid(potentialVariable)
+      !isValidJsVariable(potentialVariable)
     ) {
       varCounter += 1;
       potentialVariable = `${variable}_RENAME_${varCounter}`;

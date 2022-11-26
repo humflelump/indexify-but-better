@@ -4,7 +4,6 @@ import { removeFileExtension } from "../file-helpers/removeFileExtension";
 import { parseExports } from "../parser/parseExports";
 import { parseImports } from "../parser/parseImports";
 import {
-  AnyNode,
   ExportNode,
   ExportProxy,
   ExportTransform,
