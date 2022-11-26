@@ -30,6 +30,9 @@ function organizeImports(code) {
     ]);
     const ranges = importsWithCode.map((d) => d.range);
     code = (0, utils_1.deleteRanges)(code, [...ranges, [0, beforeImportsIndex]]);
+    if (!code.endsWith("\n")) {
+        code += "\n"; // convention
+    }
     const codeToInsert = beforeImportsCode + importsWithCode.map((d) => d.code).join("\n");
     return codeToInsert + "\n" + code;
     //   const project = new Project();

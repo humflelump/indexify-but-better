@@ -33,7 +33,7 @@
       },
       {
         "command": "helloworld.create_index",
-        "title": "Create Index File"
+        "title": "Create/Refresh Index File"
       }
     ],
     "menus": {
@@ -41,25 +41,25 @@
         {
           "when": "resourceExtname != .ts && resourceExtname != .tsx && resourceExtname != .js && resourceExtname != .jsx",
           "command": "helloworld.virtual_index",
-          "group": "YourGroup@1"
+          "group": "YourGroup@5"
         },
         {
           "when": "resourceExtname != .ts && resourceExtname != .tsx && resourceExtname != .js && resourceExtname != .jsx",
           "command": "helloworld.unused_exports",
-          "group": "YourGroup@1"
+          "group": "YourGroup@3"
         },
         {
           "when": "resourceExtname != .ts && resourceExtname != .tsx && resourceExtname != .js && resourceExtname != .jsx",
           "command": "helloworld.folder_imports",
-          "group": "YourGroup@1"
+          "group": "YourGroup@4"
         },
         {
-          "when": "resourceExtname != .ts && resourceExtname != .tsx && resourceExtname != .js && resourceExtname != .jsx",
+          "when": "",
           "command": "helloworld.delete_index",
-          "group": "YourGroup@1"
+          "group": "YourGroup@2"
         },
         {
-          "when": "resourceExtname != .ts && resourceExtname != .tsx && resourceExtname != .js && resourceExtname != .jsx",
+          "when": "",
           "command": "helloworld.create_index",
           "group": "YourGroup@1"
         }

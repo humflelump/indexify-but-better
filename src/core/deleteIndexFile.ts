@@ -1,5 +1,6 @@
 import { groupBy, keys } from "lodash";
 import { deleteFile } from "../file-helpers/deleteFile";
+import { folderForClickedIndexFile } from "../file-helpers/folderForClickedIndexFile";
 import { getIndexFilesInFolder } from "../file-helpers/getIndexFilesInFolder";
 import { isFile } from "../file-helpers/isFile";
 import { readFileContents } from "../file-helpers/readFileContents";
@@ -16,11 +17,15 @@ import { ExportNode, ImportNode } from "../types";
 
 export function deleteIndexFile(
   workspaceDirectory: string,
-  selectedDirectory: string
-) {
-  if (isFile(selectedDirectory)) {
-    throw Error("Must select a folder");
+  selectedDirectory: string,
+  useFs = false
+): string {
+  const folderOrNull = folderForClickedIndexFile(selectedDirectory);
+  if (folderOrNull === null) {
+    throw Error("Must click a directory or index file.");
   }
+  selectedDirectory = folderOrNull;
+
   const graph = createGraph(workspaceDirectory);
   const indexFiles = getIndexFilesInFolder(selectedDirectory);
   if (indexFiles.length === 0) {
@@ -76,7 +81,7 @@ export function deleteIndexFile(
     }
   }
   for (const edit of edits) {
-    writeToFile(edit.file, edit.newCode);
+    writeToFile(edit.file, edit.newCode, useFs);
   }
   deleteFile(indexFile);
   return `Done! ${edits.length} File${edits.length === 1 ? "" : "s"} Editted.`;

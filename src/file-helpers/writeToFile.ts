@@ -1,26 +1,28 @@
 import * as vscode from "vscode";
 var fs = require("fs");
 
-export function writeToFile(file: string, content: string) {
-  const uri = vscode.Uri.parse("file://" + file);
-  vscode.workspace.openTextDocument(uri).then((doc) => {
-    const edit = new vscode.WorkspaceEdit();
-    edit.replace(
-      uri,
-      new vscode.Range(
-        doc.lineAt(0).range.start,
-        doc.lineAt(doc.lineCount - 1).range.end
-      ),
-      content
-    );
-    return vscode.workspace.applyEdit(edit).then((success) => {
-      if (!success) {
-        vscode.window.showInformationMessage("Error!");
-      }
+export function writeToFile(file: string, content: string, useFs: boolean) {
+  if (useFs) {
+    fs.writeFileSync(file, content);
+  } else {
+    const uri = vscode.Uri.parse("file://" + file);
+    vscode.workspace.openTextDocument(uri).then((doc) => {
+      const edit = new vscode.WorkspaceEdit();
+      edit.replace(
+        uri,
+        new vscode.Range(
+          doc.lineAt(0).range.start,
+          doc.lineAt(doc.lineCount - 1).range.end
+        ),
+        content
+      );
+      return vscode.workspace.applyEdit(edit).then((success) => {
+        if (!success) {
+          vscode.window.showInformationMessage("Error!");
+        }
+      });
     });
-  });
-  // });
-  //fs.writeFileSync(file, content);
+  }
 }
 
 /*

@@ -1,35 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCodeForExports = exports.performImportEditsOnFile = void 0;
+exports.createCodeForExports = exports.createCodeForImports = exports.performImportEditsOnFile = void 0;
 const lodash_1 = require("lodash");
 const constants_1 = require("../constants");
 const getRelativePath_1 = require("../file-helpers/getRelativePath");
 const utils_1 = require("../utils");
 const memoizedParse_1 = require("./memoizedParse");
 const organizeImports_1 = require("./organizeImports");
-function exportProxyToString(exp) {
-    const relativeImport = (0, getRelativePath_1.getRelativePath)(exp.file, exp.source);
-    if (exp.exportName === exp.importName) {
-        return `export { ${exp.importName} } from '${relativeImport}';`;
-    }
-    else {
-        return `export { ${exp.importName} as ${exp.exportName} } from '${relativeImport}';`;
-    }
-}
-function importToString(imp) {
-    const relativeImport = (0, getRelativePath_1.getRelativePath)(imp.file, imp.source);
-    if (imp.name === "default") {
-        return `import ${imp.moduleName} from '${relativeImport}';`;
-    }
-    else if (imp.name === imp.moduleName) {
-        return `import { ${imp.name} } from '${relativeImport}';`;
-    }
-    else {
-        return `import { ${imp.name} as ${imp.moduleName} } from '${relativeImport}';`;
-    }
-}
-const NEWLINE = `
-`;
 function getIndexBeforeImports(code) {
     const node = (0, memoizedParse_1.memoizedParse)(code, constants_1.PARSER_OPTIONS);
     const imports = node.body.filter((d) => d.type === "ImportDeclaration");
@@ -47,28 +24,65 @@ function performImportEditsOnFile(code, importEdits, exportEdits) {
         [0, indexBeforeImports],
     ];
     rangesToDelete = rangesToDelete.map(([a, b]) => {
-        if (code[b] === NEWLINE) {
+        if (code[b] === "\n") {
             return [a, b + 1];
         }
         return [a, b];
     });
     code = (0, utils_1.deleteRanges)(code, rangesToDelete);
     const exportsToAdd = (0, lodash_1.flatten)(exportEdits.map((d) => d.next));
-    const exportStringsToAdd = exportsToAdd.map(exportProxyToString);
-    if (exportStringsToAdd.length) {
-        code += NEWLINE + exportStringsToAdd.join(NEWLINE);
+    if (exportsToAdd.length) {
+        code += "\n" + createCodeForExports(exportsToAdd);
     }
     const importsToAdd = (0, lodash_1.flatten)(importEdits.map((d) => d.next));
-    const importStringsToAdd = importsToAdd.map(importToString);
-    if (importStringsToAdd.length) {
-        code = importStringsToAdd.join(NEWLINE) + code;
+    if (importsToAdd.length) {
+        code = createCodeForImports(importsToAdd) + code;
     }
     code = (0, organizeImports_1.organizeImports)(code);
     return codeBeforeImports + code;
 }
 exports.performImportEditsOnFile = performImportEditsOnFile;
+function groupByPath(nodes) {
+    const groupedByPath = (0, lodash_1.groupBy)(nodes, (d) => {
+        const path = (0, getRelativePath_1.getRelativePath)(d.file, d.source);
+        const split = path.split("/");
+        if (split[split.length - 1] === "index") {
+            split.pop();
+        }
+        return split.join("/");
+    });
+    return groupedByPath;
+}
+function createCodeForImports(imports) {
+    const groupedByPath = groupByPath(imports);
+    const statements = Object.keys(groupedByPath).map((path) => {
+        let imports = groupedByPath[path];
+        const defaultImport = imports.find((d) => d.name === "default");
+        imports = imports.filter((d) => d !== defaultImport);
+        const variables = imports.map((imp) => {
+            if (imp.name === imp.moduleName) {
+                return imp.name;
+            }
+            else {
+                return `${imp.name} as ${imp.moduleName}`;
+            }
+        });
+        if (defaultImport && variables.length) {
+            const j = variables.join(", ");
+            return `import ${defaultImport.moduleName}, { ${j} } from '${path}';`;
+        }
+        else if (defaultImport && !variables.length) {
+            return `import ${defaultImport.moduleName} from '${path}';`;
+        }
+        else {
+            return `import { ${variables.join(", ")} } from '${path}';`;
+        }
+    });
+    return statements.join("\n");
+}
+exports.createCodeForImports = createCodeForImports;
 function createCodeForExports(exports) {
-    const groupedByPath = (0, lodash_1.groupBy)(exports, (d) => (0, getRelativePath_1.getRelativePath)(d.file, d.source));
+    const groupedByPath = groupByPath(exports);
     const statements = Object.keys(groupedByPath).map((path) => {
         const exports = groupedByPath[path];
         const variables = exports.map((exp) => {

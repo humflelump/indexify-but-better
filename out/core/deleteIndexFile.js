@@ -3,18 +3,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteIndexFile = void 0;
 const lodash_1 = require("lodash");
 const deleteFile_1 = require("../file-helpers/deleteFile");
+const folderForClickedIndexFile_1 = require("../file-helpers/folderForClickedIndexFile");
 const getIndexFilesInFolder_1 = require("../file-helpers/getIndexFilesInFolder");
-const isFile_1 = require("../file-helpers/isFile");
 const readFileContents_1 = require("../file-helpers/readFileContents");
 const removeFileExtension_1 = require("../file-helpers/removeFileExtension");
 const writeToFile_1 = require("../file-helpers/writeToFile");
 const createGraph_1 = require("../graph/createGraph");
 const deleteIndexFileInfo_1 = require("../graph/deleteIndexFileInfo");
 const performImportEditsOnFile_1 = require("../parser/performImportEditsOnFile");
-function deleteIndexFile(workspaceDirectory, selectedDirectory) {
-    if ((0, isFile_1.isFile)(selectedDirectory)) {
-        throw Error("Must select a folder");
+function deleteIndexFile(workspaceDirectory, selectedDirectory, useFs = false) {
+    const folderOrNull = (0, folderForClickedIndexFile_1.folderForClickedIndexFile)(selectedDirectory);
+    if (folderOrNull === null) {
+        throw Error("Must click a directory or index file.");
     }
+    selectedDirectory = folderOrNull;
     const graph = (0, createGraph_1.createGraph)(workspaceDirectory);
     const indexFiles = (0, getIndexFilesInFolder_1.getIndexFilesInFolder)(selectedDirectory);
     if (indexFiles.length === 0) {
@@ -48,7 +50,7 @@ function deleteIndexFile(workspaceDirectory, selectedDirectory) {
         }
     }
     for (const edit of edits) {
-        (0, writeToFile_1.writeToFile)(edit.file, edit.newCode);
+        (0, writeToFile_1.writeToFile)(edit.file, edit.newCode, useFs);
     }
     (0, deleteFile_1.deleteFile)(indexFile);
     return `Done! ${edits.length} File${edits.length === 1 ? "" : "s"} Editted.`;

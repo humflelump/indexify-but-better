@@ -1,7 +1,9 @@
 import { groupBy, uniq } from "lodash";
 import { createNewFile } from "../file-helpers/createNewFile";
+import { folderForClickedIndexFile } from "../file-helpers/folderForClickedIndexFile";
 import { getIndexFilesInFolder } from "../file-helpers/getIndexFilesInFolder";
 import { isFile } from "../file-helpers/isFile";
+import { isFolderMostlyJsFiles } from "../file-helpers/isFolderMostlyJsFiles";
 import { readFileContents } from "../file-helpers/readFileContents";
 import { writeToFile } from "../file-helpers/writeToFile";
 import { createGraph } from "../graph/createGraph";
@@ -10,20 +12,36 @@ import {
   createCodeForExports,
   performImportEditsOnFile,
 } from "../parser/performImportEditsOnFile";
+import { deleteIndexFile } from "./deleteIndexFile";
 
 export function createIndexFile(
   workspaceDirectory: string,
-  selectedDirectory: string
-) {
-  if (isFile(selectedDirectory)) {
-    throw Error("Must select a folder");
+  selectedDirectory: string,
+  useFs = false
+): string {
+  const folderOrNull = folderForClickedIndexFile(selectedDirectory);
+  if (folderOrNull === null) {
+    throw Error("Must click a directory or index file.");
   }
+  selectedDirectory = folderOrNull;
   const graph = createGraph(workspaceDirectory);
   const indexFiles = getIndexFilesInFolder(selectedDirectory);
   if (indexFiles.length > 1) {
     throw Error(`Multiple index files found: ${indexFiles.join(", ")}`);
   }
+  if (indexFiles.length === 1) {
+    // console.log("a", Date.now());
+    // deleteIndexFile(workspaceDirectory, selectedDirectory, true);
+    // console.log("b", Date.now());
+    // setTimeout(() => {
+    //   console.log("c", Date.now());
+    //   createIndexFile(workspaceDirectory, selectedDirectory, true);
+    // }, 1000);
+    deleteIndexFile(workspaceDirectory, selectedDirectory, true);
+    return createIndexFile(workspaceDirectory, selectedDirectory, true);
+  }
   const info = createIndexFileInfo(graph, selectedDirectory);
+
   const groupedExportEdits = groupBy(
     info.exportTransform,
     (d) => d.original.fileWithExtension
@@ -49,11 +67,13 @@ export function createIndexFile(
     const newCode = performImportEditsOnFile(oldCode, imports, exports);
     return { file, oldCode, newCode };
   });
+  const isJs = isFolderMostlyJsFiles(selectedDirectory);
   for (const edit of edits) {
-    writeToFile(edit.file, edit.newCode);
+    writeToFile(edit.file, edit.newCode, useFs);
   }
+
   createNewFile(
-    `${selectedDirectory}/index.ts`,
+    `${selectedDirectory}/index.${isJs ? "js" : "ts"}`,
     createCodeForExports(info.newExportProxies)
   );
   return `Done! ${edits.length} File${edits.length === 1 ? "" : "s"} Editted.`;

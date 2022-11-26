@@ -1,5 +1,4 @@
 import { sortBy } from "lodash";
-import { Project, FormatCodeSettings } from "ts-morph";
 import { PARSER_OPTIONS } from "../constants";
 import { deleteRanges } from "../utils";
 import { memoizedParse } from "./memoizedParse";
@@ -29,6 +28,9 @@ export function organizeImports(code: string) {
   ]);
   const ranges = importsWithCode.map((d) => d.range);
   code = deleteRanges(code, [...ranges, [0, beforeImportsIndex]]);
+  if (!code.endsWith("\n")) {
+    code += "\n"; // convention
+  }
 
   const codeToInsert =
     beforeImportsCode + importsWithCode.map((d) => d.code).join("\n");

@@ -6,33 +6,11 @@ import {
   ExportProxy,
   ExportTransform,
   ImportTransform,
+  NodeWithSource,
 } from "../types";
 import { deleteRanges } from "../utils";
 import { memoizedParse } from "./memoizedParse";
 import { organizeImports } from "./organizeImports";
-
-function exportProxyToString(exp: ExportProxy) {
-  const relativeImport = getRelativePath(exp.file, exp.source);
-  if (exp.exportName === exp.importName) {
-    return `export { ${exp.importName} } from '${relativeImport}';`;
-  } else {
-    return `export { ${exp.importName} as ${exp.exportName} } from '${relativeImport}';`;
-  }
-}
-
-function importToString(imp: BasicImport) {
-  const relativeImport = getRelativePath(imp.file, imp.source);
-  if (imp.name === "default") {
-    return `import ${imp.moduleName} from '${relativeImport}';`;
-  } else if (imp.name === imp.moduleName) {
-    return `import { ${imp.name} } from '${relativeImport}';`;
-  } else {
-    return `import { ${imp.name} as ${imp.moduleName} } from '${relativeImport}';`;
-  }
-}
-
-const NEWLINE = `
-`;
 
 function getIndexBeforeImports(code: string) {
   const node = memoizedParse(code, PARSER_OPTIONS);
@@ -56,30 +34,63 @@ export function performImportEditsOnFile(
     [0, indexBeforeImports],
   ];
   rangesToDelete = rangesToDelete.map(([a, b]) => {
-    if (code[b] === NEWLINE) {
+    if (code[b] === "\n") {
       return [a, b + 1];
     }
     return [a, b];
   });
   code = deleteRanges(code, rangesToDelete);
   const exportsToAdd = flatten(exportEdits.map((d) => d.next));
-  const exportStringsToAdd = exportsToAdd.map(exportProxyToString);
-  if (exportStringsToAdd.length) {
-    code += NEWLINE + exportStringsToAdd.join(NEWLINE);
+  if (exportsToAdd.length) {
+    code += "\n" + createCodeForExports(exportsToAdd);
   }
   const importsToAdd = flatten(importEdits.map((d) => d.next));
-  const importStringsToAdd = importsToAdd.map(importToString);
-  if (importStringsToAdd.length) {
-    code = importStringsToAdd.join(NEWLINE) + code;
+  if (importsToAdd.length) {
+    code = createCodeForImports(importsToAdd) + code;
   }
   code = organizeImports(code);
   return codeBeforeImports + code;
 }
 
+function groupByPath<T extends NodeWithSource>(nodes: T[]) {
+  const groupedByPath = groupBy(nodes, (d) => {
+    const path = getRelativePath(d.file, d.source);
+    const split = path.split("/");
+    if (split[split.length - 1] === "index") {
+      split.pop();
+    }
+    return split.join("/");
+  });
+  return groupedByPath;
+}
+
+export function createCodeForImports(imports: BasicImport[]) {
+  const groupedByPath = groupByPath(imports);
+  const statements = Object.keys(groupedByPath).map((path) => {
+    let imports = groupedByPath[path];
+    const defaultImport = imports.find((d) => d.name === "default");
+    imports = imports.filter((d) => d !== defaultImport);
+    const variables = imports.map((imp) => {
+      if (imp.name === imp.moduleName) {
+        return imp.name;
+      } else {
+        return `${imp.name} as ${imp.moduleName}`;
+      }
+    });
+    if (defaultImport && variables.length) {
+      const j = variables.join(", ");
+      return `import ${defaultImport.moduleName}, { ${j} } from '${path}';`;
+    } else if (defaultImport && !variables.length) {
+      return `import ${defaultImport.moduleName} from '${path}';`;
+    } else {
+      return `import { ${variables.join(", ")} } from '${path}';`;
+    }
+  });
+  return statements.join("\n");
+}
+
 export function createCodeForExports(exports: ExportProxy[]) {
-  const groupedByPath = groupBy(exports, (d) =>
-    getRelativePath(d.file, d.source)
-  );
+  const groupedByPath = groupByPath(exports);
   const statements = Object.keys(groupedByPath).map((path) => {
     const exports = groupedByPath[path];
     const variables = exports.map((exp) => {
