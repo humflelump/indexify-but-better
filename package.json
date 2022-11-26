@@ -3,7 +3,7 @@
   "displayName": "IndexifyButBetter",
   "publisher": "markmetzger",
   "description": "Maintains index files in JS/TS apps",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "homepage": "https://github.com/humflelump/indexify-but-better.git",
   "repository": {
     "type": "git",
