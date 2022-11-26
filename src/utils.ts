@@ -31,9 +31,9 @@ export function deleteRanges(str: string, ranges: [number, number][]) {
   return result.join("");
 }
 
-var varVal = require("var-validator");
+const isVarName = require("is-valid-var-name");
 export function isValidJsVariable(s: string): boolean {
-  return varVal.isValid(s);
+  return isVarName(s);
 }
 
 export function getUnsavedDocuments() {

@@ -896,6 +896,13 @@ is-unicode-supported@^0.1.0:
   resolved "https://registry.yarnpkg.com/is-unicode-supported/-/is-unicode-supported-0.1.0.tgz#3f26c76a809593b52bfa2ecb5710ed2779b522a7"
   integrity sha512-knxG2q4UC3u8stRGyAVJCOdxFmv5DZiRcdlIaAQXAbSfJya+OhopNotLQrstBhququ4ZpuKbDc/8S6mgXgPFPw==
 
+is-valid-var-name@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/is-valid-var-name/-/is-valid-var-name-1.0.2.tgz#a302adc01ba5083695c21ec8a4157280e734c405"
+  integrity sha512-GsNf3qzJ/YnVhIKPhBOOgk7rh6g6JOo7BOleyr21ZVv0yLAhPFzJU3/dNl1YpH5mlkxhPx7RPY0eF31hSWkRPg==
+  dependencies:
+    unicode-categories "^0.9.1"
+
 isarray@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
@@ -1367,6 +1374,11 @@ typescript@^4.9.3:
   version "4.9.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.9.3.tgz#3aea307c1746b8c384435d8ac36b8a2e580d85db"
   integrity sha512-CIfGzTelbKNEnLpLdGFgdyKhG23CKdKgQPOBc+OUNrkJ2vr+KSzsSV5kq5iWhEQbok+quxgGzrAtGWCyU7tHnA==
+
+unicode-categories@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/unicode-categories/-/unicode-categories-0.9.1.tgz#ead892c07ebc108f2dcea0d4326ffb850969c9c8"
+  integrity sha512-61OCyQc95VLUzCzFwfNs61DicwfJ/Mv8+GiYkag2khY/42ujZnsjg7qMMMwOIcmFZT/YBD1YdXrf+gQZUoAgiQ==
 
 unzipper@^0.10.11:
   version "0.10.11"
