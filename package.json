@@ -1,8 +1,14 @@
 {
   "name": "indexify-but-better",
   "displayName": "IndexifyButBetter",
+  "publisher": "markmetzger",
   "description": "Maintains index files in JS/TS apps",
-  "version": "0.0.1",
+  "version": "0.0.3",
+  "homepage": "https://github.com/humflelump/indexify-but-better.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/humflelump/indexify-but-better.git"
+  },
   "engines": {
     "vscode": "^1.73.0"
   },
@@ -67,6 +73,8 @@
     }
   },
   "scripts": {
+    "publish": "vsce publish",
+    "build": "vsce package",
     "vscode:prepublish": "yarn run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
@@ -85,19 +93,18 @@
     "eslint": "^8.26.0",
     "glob": "^8.0.3",
     "mocha": "^10.1.0",
-    "prettier": "^2.6.2",
-    "typescript": "^4.9.3"
+    "prettier": "^2.6.2"
   },
   "dependencies": {
     "@types/lodash": "^4.14.189",
     "@typescript-eslint/typescript-estree": "^5.44.0",
     "abstract-syntax-tree": "^2.20.6",
     "es-module-lexer": "^1.1.0",
-    "fs": "^0.0.1-security",
     "lodash": "^4.17.21",
     "parse-imports": "^1.1.0",
     "ts-morph": "^17.0.1",
     "ts-unused-exports": "^8.0.0",
-    "var-validator": "^0.0.3"
+    "var-validator": "^0.0.3",
+    "typescript": "^4.9.3"
   }
 }
