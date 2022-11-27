@@ -1,4 +1,5 @@
 import { groupBy, keyBy } from "lodash";
+import { isFileInDirectory } from "../file-helpers/isFileInDirectory";
 import {
   AnyNode,
   BasicImport,
@@ -43,10 +44,6 @@ export function createIndexFileInfo(
   graph: ExportGraph,
   selectedDirectory: string
 ) {
-  function inDirectory(file: string) {
-    return file.startsWith(selectedDirectory);
-  }
-
   const newExports = graph
     .getNodes()
     .filter((d) => d.type === "NewExport") as NewExport[];
@@ -55,8 +52,8 @@ export function createIndexFileInfo(
     graph.traverse(node, (next, variable, prevNode, prevVariable) => {
       if (
         next.type !== "ImportAll" &&
-        inDirectory(prevNode.file) &&
-        !inDirectory(next.file)
+        isFileInDirectory(prevNode.file, selectedDirectory) &&
+        !isFileInDirectory(next.file, selectedDirectory)
       ) {
         result.push({
           exportNode: prevNode,

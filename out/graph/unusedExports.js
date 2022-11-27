@@ -1,13 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.unusedExports = void 0;
+const isFileInDirectory_1 = require("../file-helpers/isFileInDirectory");
 function unusedExports(graph, folder) {
+    console.log({ folder });
     const nodes = graph
         .getNodes()
         .filter((d) => d.type === "NewExport");
-    function isDirectoryOutsideOfFolder(file) {
-        return !file.startsWith(folder);
-    }
     function getCount(node) {
         let count = 0;
         graph.traverse(node, (child) => {
@@ -25,7 +24,7 @@ function unusedExports(graph, folder) {
         };
     })
         .filter((d) => d.count === 0)
-        .filter((d) => !isDirectoryOutsideOfFolder(d.file));
+        .filter((d) => (0, isFileInDirectory_1.isFileInDirectory)(d.file, folder));
     return result;
 }
 exports.unusedExports = unusedExports;

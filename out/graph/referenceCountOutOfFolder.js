@@ -1,18 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.referenceCountOutOfFolder = void 0;
+const isFileInDirectory_1 = require("../file-helpers/isFileInDirectory");
 function referenceCountOutOfFolder(graph, folder) {
-    function isDirectoryOutsideOfFolder(file) {
-        return !file.startsWith(folder);
-    }
     const nodes = graph
         .getNodes()
         .filter((d) => d.type === "NewExport")
-        .filter((d) => !isDirectoryOutsideOfFolder(d.file));
+        .filter((d) => (0, isFileInDirectory_1.isFileInDirectory)(d.file, folder));
     function getCount(node) {
         let count = 0;
         graph.traverse(node, (child) => {
-            if (isDirectoryOutsideOfFolder(child.file) &&
+            if (!(0, isFileInDirectory_1.isFileInDirectory)(child.file, folder) &&
                 (child.type === "Import" || child.type === "ImportAll")) {
                 count += 1;
             }
