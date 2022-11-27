@@ -16,11 +16,14 @@ export function writeToFile(file: string, content: string, useFs: boolean) {
         ),
         content
       );
-      return vscode.workspace.applyEdit(edit).then((success) => {
-        if (!success) {
-          vscode.window.showInformationMessage("Error!");
-        }
-      });
+      return vscode.workspace
+        .applyEdit(edit)
+        .then((success) => {
+          if (!success) {
+            vscode.window.showInformationMessage("Error!");
+          }
+        })
+        .then(() => doc.save());
     });
   }
 }

@@ -30,7 +30,7 @@ export function createIndexFile(
   }
   if (indexFiles.length === 1) {
     deleteIndexFile(workspaceDirectory, selectedDirectory, true);
-    return createIndexFile(workspaceDirectory, selectedDirectory, true);
+    return createIndexFile(workspaceDirectory, selectedDirectory, false);
   }
   const info = createIndexFileInfo(graph, selectedDirectory);
 
@@ -59,11 +59,12 @@ export function createIndexFile(
     const newCode = performImportEditsOnFile(oldCode, imports, exports);
     return { file, oldCode, newCode };
   });
-  const isJs = isFolderMostlyJsFiles(selectedDirectory);
+
   for (const edit of edits) {
     writeToFile(edit.file, edit.newCode, useFs);
   }
 
+  const isJs = isFolderMostlyJsFiles(selectedDirectory);
   createNewFile(
     `${selectedDirectory}/index.${isJs ? "js" : "ts"}`,
     createCodeForExports(info.newExportProxies)
