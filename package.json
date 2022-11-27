@@ -3,7 +3,7 @@
   "displayName": "IndexifyButBetter",
   "publisher": "markmetzger",
   "description": "Maintains index files and their dependencies",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "homepage": "https://github.com/humflelump/indexify-but-better.git",
   "repository": {
     "type": "git",
