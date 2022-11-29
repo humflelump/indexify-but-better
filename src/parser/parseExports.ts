@@ -37,6 +37,7 @@ export function parseExports(
           range: exportNode.range,
           file: filename,
           name: node.name,
+          isTsType: (exportNode as any)?.exportKind === "type",
         });
       });
     });
@@ -52,6 +53,7 @@ export function parseExports(
         range: node.range,
         file: filename,
         name: "default",
+        isTsType: false,
       });
     });
   })();

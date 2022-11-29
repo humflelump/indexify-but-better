@@ -38,6 +38,7 @@ type ProxiedVariables = {
   importNode: AnyNode;
   exportVariable: string;
   importVariable: string;
+  isTsType: boolean;
 };
 
 export function createIndexFileInfo(
@@ -60,6 +61,7 @@ export function createIndexFileInfo(
           importNode: next,
           exportVariable: prevVariable,
           importVariable: variable,
+          isTsType: node.isTsType,
         });
       }
     });
@@ -80,6 +82,7 @@ export function createIndexFileInfo(
     const list = groupedByExport[key];
     const exportNode = list[0].exportNode;
     const exportVariable = list[0].exportVariable;
+    const isTsType = list[0].isTsType;
     const possibleName = (function getFilename() {
       const split = exportNode.file.split("/");
       return String(split[split.length - 1]);
@@ -93,6 +96,7 @@ export function createIndexFileInfo(
       range: [0, 0],
       importName: exportVariable,
       exportName: proxiedVariable,
+      isTsType,
     };
     newExportProxies.push(indexProxy);
   });
@@ -164,6 +168,7 @@ export function createIndexFileInfo(
         range: [0, 0],
         importName: proxyNode.exportName,
         exportName: exportProxyNode.exportName,
+        isTsType: exportProxyNode.isTsType,
       };
       exportTransform.push({
         original: exportProxyNode,
@@ -194,6 +199,7 @@ export function createIndexFileInfo(
           range: [0, 0],
           importName: proxyNode.exportName,
           exportName: obj.exportVariable,
+          isTsType: obj.isTsType,
         };
         return reExport;
       });

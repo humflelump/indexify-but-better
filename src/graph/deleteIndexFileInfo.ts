@@ -18,6 +18,7 @@ type ProxiedFile = {
   proxiedFile: string;
   exportedFromFile: string;
   exportedFromIndex: string;
+  isTsType: boolean;
 };
 
 export function getProxiedFilesInfo(
@@ -86,6 +87,7 @@ export function transformExports(
           source: proxy.proxiedFile,
           exportName: proxy.exportedFromIndex,
           importName: proxy.exportedFromFile,
+          isTsType: proxy.isTsType,
         };
       });
       result.push({
@@ -109,6 +111,7 @@ export function transformExports(
             source: proxy.proxiedFile,
             exportName: node.exportName,
             importName: proxy.exportedFromFile,
+            isTsType: proxy.isTsType,
           },
         ],
       });
@@ -146,6 +149,7 @@ export function deleteIndexFileInfo(graph: ExportGraph, indexFile: string) {
           proxiedFile: prevNode.file,
           exportedFromFile: prevVariable,
           exportedFromIndex: variable,
+          isTsType: node.isTsType,
         });
       }
     });

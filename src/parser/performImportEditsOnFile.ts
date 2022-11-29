@@ -1,4 +1,4 @@
-import { flatten, groupBy } from "lodash";
+import { flatten, groupBy, partition } from "lodash";
 import { PARSER_OPTIONS } from "../constants";
 import { getRelativePath } from "../file-helpers/getRelativePath";
 import {
@@ -90,17 +90,31 @@ function createCodeForImports(imports: BasicImport[]) {
 }
 
 export function createCodeForExports(exports: ExportProxy[]) {
-  const groupedByPath = groupByPath(exports);
-  const statements = Object.keys(groupedByPath).map((path) => {
-    const exports = groupedByPath[path];
-    const variables = exports.map((exp) => {
-      if (exp.exportName === exp.importName) {
-        return exp.importName;
-      } else {
-        return `${exp.importName} as ${exp.exportName}`;
-      }
+  function createCode(exports: ExportProxy[], isType: boolean) {
+    const groupedByPath = groupByPath(exports);
+    const statements = Object.keys(groupedByPath).map((path) => {
+      const exports = groupedByPath[path];
+      const variables = exports.map((exp) => {
+        if (exp.exportName === exp.importName) {
+          return exp.importName;
+        } else {
+          return `${exp.importName} as ${exp.exportName}`;
+        }
+      });
+      return `export${isType ? " type" : ""} { ${variables.join(
+        ", "
+      )} } from '${path}';`;
     });
-    return `export { ${variables.join(", ")} } from '${path}';`;
-  });
-  return statements.join("\n") + "\n";
+    return statements.join("\n");
+  }
+  const [ts, notTs] = partition(exports, (d) => d.isTsType);
+  let code = createCode(ts, true);
+  if (!code.endsWith("\n")) {
+    code += "\n";
+  }
+  code += createCode(notTs, false);
+  if (!code.endsWith("\n")) {
+    code += "\n";
+  }
+  return code;
 }

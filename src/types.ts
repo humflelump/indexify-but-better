@@ -30,6 +30,7 @@ type ExportBase = {
 
 export type NewExport = {
   type: "NewExport";
+  isTsType: boolean;
   name: string;
 } & ExportBase;
 
@@ -38,6 +39,7 @@ export type ExportProxy = {
   source: string;
   exportName: string;
   importName: string;
+  isTsType?: boolean;
 } & ExportBase;
 
 type ExportAllProxy = {

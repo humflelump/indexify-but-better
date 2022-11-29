@@ -25,12 +25,43 @@ suite("Extension Test Suite", () => {
   test("Basic Single Export", () => {
     const code = "export const x = 1;";
     const nodes = parseExports(code, "file");
-    const goal = [
+    const goal: ExportNode[] = [
       {
         type: "NewExport",
         range: [0, code.length],
         file: "file",
         name: "x",
+        isTsType: false,
+      },
+    ];
+    assert.deepEqual(nodes, goal);
+  });
+
+  test("Basic Type Export", () => {
+    const code = "export type T = true;";
+    const nodes = parseExports(code, "file");
+    const goal: ExportNode[] = [
+      {
+        type: "NewExport",
+        range: [0, code.length],
+        file: "file",
+        name: "T",
+        isTsType: true,
+      },
+    ];
+    assert.deepEqual(nodes, goal);
+  });
+
+  test("Basic Type Export", () => {
+    const code = "export interface I {}";
+    const nodes = parseExports(code, "file");
+    const goal: ExportNode[] = [
+      {
+        type: "NewExport",
+        range: [0, code.length],
+        file: "file",
+        name: "I",
+        isTsType: true,
       },
     ];
     assert.deepEqual(nodes, goal);
@@ -39,18 +70,20 @@ suite("Extension Test Suite", () => {
   test("Multiple Inline Export", () => {
     const code = `export const x = 5, y = 10;`;
     const nodes = parseExports(code, "file");
-    const goal = [
+    const goal: ExportNode[] = [
       {
         type: "NewExport",
         range: [0, code.length],
         file: "file",
         name: "x",
+        isTsType: false,
       },
       {
         type: "NewExport",
         range: [0, code.length],
         file: "file",
         name: "y",
+        isTsType: false,
       },
     ];
     assert.deepEqual(nodes, goal);
@@ -59,18 +92,20 @@ suite("Extension Test Suite", () => {
   test("Array Spread Export", () => {
     const code = `export const [x, y] = [5, 10];`;
     const nodes = parseExports(code, "file");
-    const goal = [
+    const goal: ExportNode[] = [
       {
         type: "NewExport",
         range: [0, code.length],
         file: "file",
         name: "x",
+        isTsType: false,
       },
       {
         type: "NewExport",
         range: [0, code.length],
         file: "file",
         name: "y",
+        isTsType: false,
       },
     ];
     assert.deepEqual(nodes, goal);
@@ -79,12 +114,13 @@ suite("Extension Test Suite", () => {
   test("Basic Object Spread", () => {
     const code = `export const { x } = { x: 5 };`;
     const nodes = parseExports(code, "file");
-    const goal = [
+    const goal: ExportNode[] = [
       {
         type: "NewExport",
         range: [0, code.length],
         file: "file",
         name: "x",
+        isTsType: false,
       },
     ];
     assert.deepEqual(nodes, goal);
@@ -93,12 +129,13 @@ suite("Extension Test Suite", () => {
   test("Object Spread Rename", () => {
     const code = `export const { x: y } = { x: 5 };`;
     const nodes = parseExports(code, "file");
-    const goal = [
+    const goal: ExportNode[] = [
       {
         type: "NewExport",
         range: [0, code.length],
         file: "file",
         name: "y",
+        isTsType: false,
       },
     ];
     assert.deepEqual(nodes, goal);
@@ -107,18 +144,20 @@ suite("Extension Test Suite", () => {
   test("Complex Object Spread", () => {
     const code = `export const { x: { y: { z: { a, b } } } } = { x: { y: { z: { "a": 1, b: 2 } } } };`;
     const nodes = parseExports(code, "file");
-    const goal = [
+    const goal: ExportNode[] = [
       {
         type: "NewExport",
         range: [0, code.length],
         file: "file",
         name: "a",
+        isTsType: false,
       },
       {
         type: "NewExport",
         range: [0, code.length],
         file: "file",
         name: "b",
+        isTsType: false,
       },
     ];
     assert.deepEqual(nodes, goal);
@@ -127,12 +166,13 @@ suite("Extension Test Suite", () => {
   test("Basic Function Export", () => {
     const code = `export function myFunction() { console.log('hello'); }`;
     const nodes = parseExports(code, "file");
-    const goal = [
+    const goal: ExportNode[] = [
       {
         type: "NewExport",
         range: [0, code.length],
         file: "file",
         name: "myFunction",
+        isTsType: false,
       },
     ];
     assert.deepEqual(nodes, goal);
@@ -141,12 +181,13 @@ suite("Extension Test Suite", () => {
   test("Basic Generator Function Export", () => {
     const code = `export function* myFunction() { console.log('hello'); }`;
     const nodes = parseExports(code, "file");
-    const goal = [
+    const goal: ExportNode[] = [
       {
         type: "NewExport",
         range: [0, code.length],
         file: "file",
         name: "myFunction",
+        isTsType: false,
       },
     ];
     assert.deepEqual(nodes, goal);
@@ -155,12 +196,13 @@ suite("Extension Test Suite", () => {
   test("Basic Class Export", () => {
     const code = `export class MyClass { x = 5 }`;
     const nodes = parseExports(code, "file");
-    const goal = [
+    const goal: ExportNode[] = [
       {
         type: "NewExport",
         range: [0, code.length],
         file: "file",
         name: "MyClass",
+        isTsType: false,
       },
     ];
     assert.deepEqual(nodes, goal);
@@ -169,18 +211,20 @@ suite("Extension Test Suite", () => {
   test("Export Declared Variable", () => {
     const code = `let x = 5, y = 6; export { x, y };`;
     const nodes = parseExports(code, "file");
-    const goal = [
+    const goal: ExportNode[] = [
       {
         type: "NewExport",
         range: [18, code.length],
         file: "file",
         name: "x",
+        isTsType: false,
       },
       {
         type: "NewExport",
         range: [18, code.length],
         file: "file",
         name: "y",
+        isTsType: false,
       },
     ];
     assert.deepEqual(nodes, goal);
@@ -189,12 +233,13 @@ suite("Extension Test Suite", () => {
   test("Export Declared Variable And Rename", () => {
     const code = `let x = 5; export { x as y };`;
     const nodes = parseExports(code, "file");
-    const goal = [
+    const goal: ExportNode[] = [
       {
         type: "NewExport",
         range: [11, code.length],
         file: "file",
         name: "y",
+        isTsType: false,
       },
     ];
     assert.deepEqual(nodes, goal);
@@ -203,18 +248,20 @@ suite("Extension Test Suite", () => {
   test("Export Declared Variable And Rename As Default", () => {
     const code = `let x = 5; export { x as default, x as y };`;
     const nodes = parseExports(code, "file");
-    const goal = [
+    const goal: ExportNode[] = [
       {
         type: "NewExport",
         range: [11, code.length],
         file: "file",
         name: "default",
+        isTsType: false,
       },
       {
         type: "NewExport",
         range: [11, code.length],
         file: "file",
         name: "y",
+        isTsType: false,
       },
     ];
     assert.deepEqual(nodes, goal);
@@ -223,12 +270,13 @@ suite("Extension Test Suite", () => {
   test("Basic Default Export", () => {
     const code = `export default 0;`;
     const nodes = parseExports(code, "file");
-    const goal = [
+    const goal: ExportNode[] = [
       {
         type: "NewExport",
         range: [0, code.length],
         file: "file",
         name: "default",
+        isTsType: false,
       },
     ];
     assert.deepEqual(nodes, goal);

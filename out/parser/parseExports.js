@@ -31,6 +31,7 @@ function parseExports(sourceCode, filename) {
                     range: exportNode.range,
                     file: filename,
                     name: node.name,
+                    isTsType: exportNode?.exportKind === "type",
                 });
             });
         });
@@ -43,6 +44,7 @@ function parseExports(sourceCode, filename) {
                 range: node.range,
                 file: filename,
                 name: "default",
+                isTsType: false,
             });
         });
     })();

@@ -23,6 +23,35 @@ suite("Extension Test Suite", () => {
                 range: [0, code.length],
                 file: "file",
                 name: "x",
+                isTsType: false,
+            },
+        ];
+        assert.deepEqual(nodes, goal);
+    });
+    test("Basic Type Export", () => {
+        const code = "export type T = true;";
+        const nodes = (0, parseExports_1.parseExports)(code, "file");
+        const goal = [
+            {
+                type: "NewExport",
+                range: [0, code.length],
+                file: "file",
+                name: "T",
+                isTsType: true,
+            },
+        ];
+        assert.deepEqual(nodes, goal);
+    });
+    test("Basic Type Export", () => {
+        const code = "export interface I {}";
+        const nodes = (0, parseExports_1.parseExports)(code, "file");
+        const goal = [
+            {
+                type: "NewExport",
+                range: [0, code.length],
+                file: "file",
+                name: "I",
+                isTsType: true,
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -36,12 +65,14 @@ suite("Extension Test Suite", () => {
                 range: [0, code.length],
                 file: "file",
                 name: "x",
+                isTsType: false,
             },
             {
                 type: "NewExport",
                 range: [0, code.length],
                 file: "file",
                 name: "y",
+                isTsType: false,
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -55,12 +86,14 @@ suite("Extension Test Suite", () => {
                 range: [0, code.length],
                 file: "file",
                 name: "x",
+                isTsType: false,
             },
             {
                 type: "NewExport",
                 range: [0, code.length],
                 file: "file",
                 name: "y",
+                isTsType: false,
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -74,6 +107,7 @@ suite("Extension Test Suite", () => {
                 range: [0, code.length],
                 file: "file",
                 name: "x",
+                isTsType: false,
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -87,6 +121,7 @@ suite("Extension Test Suite", () => {
                 range: [0, code.length],
                 file: "file",
                 name: "y",
+                isTsType: false,
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -100,12 +135,14 @@ suite("Extension Test Suite", () => {
                 range: [0, code.length],
                 file: "file",
                 name: "a",
+                isTsType: false,
             },
             {
                 type: "NewExport",
                 range: [0, code.length],
                 file: "file",
                 name: "b",
+                isTsType: false,
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -119,6 +156,7 @@ suite("Extension Test Suite", () => {
                 range: [0, code.length],
                 file: "file",
                 name: "myFunction",
+                isTsType: false,
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -132,6 +170,7 @@ suite("Extension Test Suite", () => {
                 range: [0, code.length],
                 file: "file",
                 name: "myFunction",
+                isTsType: false,
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -145,6 +184,7 @@ suite("Extension Test Suite", () => {
                 range: [0, code.length],
                 file: "file",
                 name: "MyClass",
+                isTsType: false,
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -158,12 +198,14 @@ suite("Extension Test Suite", () => {
                 range: [18, code.length],
                 file: "file",
                 name: "x",
+                isTsType: false,
             },
             {
                 type: "NewExport",
                 range: [18, code.length],
                 file: "file",
                 name: "y",
+                isTsType: false,
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -177,6 +219,7 @@ suite("Extension Test Suite", () => {
                 range: [11, code.length],
                 file: "file",
                 name: "y",
+                isTsType: false,
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -190,12 +233,14 @@ suite("Extension Test Suite", () => {
                 range: [11, code.length],
                 file: "file",
                 name: "default",
+                isTsType: false,
             },
             {
                 type: "NewExport",
                 range: [11, code.length],
                 file: "file",
                 name: "y",
+                isTsType: false,
             },
         ];
         assert.deepEqual(nodes, goal);
@@ -209,6 +254,7 @@ suite("Extension Test Suite", () => {
                 range: [0, code.length],
                 file: "file",
                 name: "default",
+                isTsType: false,
             },
         ];
         assert.deepEqual(nodes, goal);
